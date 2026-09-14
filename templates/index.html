@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="uk">
 
 <head>
@@ -11,8 +10,7 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
 
-    <title>Для тебе </title>
-
+    <title>Для тебе</title>
 
     <style>
 
@@ -21,25 +19,16 @@
         ===================================================== */
 
         * {
-
             box-sizing: border-box;
-
             margin: 0;
-
             padding: 0;
-
         }
-
 
         html,
         body {
-
             width: 100%;
-
             min-height: 100%;
-
         }
-
 
         body {
 
@@ -85,7 +74,6 @@
                     #702f55,
                     #25152e
                 );
-
         }
 
 
@@ -104,9 +92,7 @@
             overflow: hidden;
 
             z-index: 1;
-
         }
-
 
         .background-particle {
 
@@ -124,9 +110,7 @@
                 floatParticle
                 linear
                 infinite;
-
         }
-
 
         @keyframes floatParticle {
 
@@ -137,23 +121,15 @@
                     translateX(0);
 
                 opacity: 0;
-
             }
-
 
             10% {
-
                 opacity: 1;
-
             }
-
 
             90% {
-
                 opacity: 1;
-
             }
-
 
             to {
 
@@ -162,9 +138,7 @@
                     translateX(80px);
 
                 opacity: 0;
-
             }
-
         }
 
 
@@ -189,12 +163,437 @@
             position: relative;
 
             z-index: 5;
-
         }
 
 
         /* =====================================================
-           ПОЧАТКОВИЙ ЕКРАН
+           BOOT SCREEN
+        ===================================================== */
+
+        .boot-screen {
+
+            width: min(760px, 94vw);
+
+            min-height: 420px;
+
+            padding: 28px;
+
+            border:
+                1px solid
+                rgba(95, 220, 255, 0.28);
+
+            border-radius: 18px;
+
+            background:
+                rgba(5, 10, 18, 0.78);
+
+            box-shadow:
+
+                0 30px 80px
+                rgba(0,0,0,0.45),
+
+                inset
+                0 0 50px
+                rgba(0,180,255,0.035);
+
+            backdrop-filter:
+                blur(14px);
+
+            font-family:
+                "Courier New",
+                Consolas,
+                monospace;
+
+            position: relative;
+
+            overflow: hidden;
+
+            animation:
+                bootAppear
+                0.8s
+                ease;
+        }
+
+        @keyframes bootAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    scale(0.97)
+                    translateY(15px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    scale(1)
+                    translateY(0);
+            }
+        }
+
+        .boot-screen::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    transparent 50%,
+                    rgba(255,255,255,0.018) 50%
+                );
+
+            background-size:
+                100% 4px;
+
+            pointer-events: none;
+
+            opacity: 0.35;
+        }
+
+
+        /* =====================================================
+           BOOT HEADER
+        ===================================================== */
+
+        .boot-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+
+            padding-bottom: 15px;
+
+            border-bottom:
+                1px solid
+                rgba(95,220,255,0.16);
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .boot-logo {
+
+            color:
+                #64d9ff;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            text-shadow:
+                0 0 12px
+                rgba(80,210,255,0.5);
+        }
+
+        .boot-status {
+
+            color:
+                #6ee7a8;
+
+            font-size: 12px;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =====================================================
+           BOOT TERMINAL
+           
+           ГОЛОВНА ЗМІНА:
+           термінал має власну область прокрутки.
+        ===================================================== */
+
+        .boot-terminal {
+
+            position: relative;
+
+            z-index: 2;
+
+            height: 250px;
+
+            /*
+             * ВАЖЛИВО:
+             * тепер текст прокручується всередині
+             * цього блоку, а не виходить вниз.
+             */
+
+            overflow-y: auto;
+
+            overflow-x: hidden;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: flex-start;
+
+            /*
+             * Прибираємо видиму смугу прокрутки.
+             */
+
+            scrollbar-width: none;
+
+            scroll-behavior: smooth;
+        }
+
+
+        /*
+         * Chrome / Edge / Safari
+         */
+
+        .boot-terminal::-webkit-scrollbar {
+            display: none;
+        }
+
+
+        /* =====================================================
+           BOOT LINES
+        ===================================================== */
+
+        .boot-line {
+
+            min-height: 27px;
+
+            line-height: 27px;
+
+            color:
+                rgba(220,240,248,0.88);
+
+            font-size:
+                clamp(
+                    12px,
+                    2vw,
+                    15px
+                );
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+
+            /*
+             * Рядки не стискаються.
+             */
+
+            flex-shrink: 0;
+
+            opacity: 0;
+
+            transform:
+                translateY(5px);
+
+            animation:
+                bootLineAppear
+                0.25s
+                ease
+                forwards;
+        }
+
+        @keyframes bootLineAppear {
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        /*
+         * Кольори рядків
+         */
+
+        .boot-line .command {
+            color:
+                #64d9ff;
+        }
+
+        .boot-line .success {
+            color:
+                #6ee7a8;
+        }
+
+        .boot-line .warning {
+            color:
+                #ffd166;
+        }
+
+        .boot-line .pink {
+            color:
+                #ff78b7;
+        }
+
+
+        /* =====================================================
+           КУРСОР ДРУКУ
+        ===================================================== */
+
+        .boot-cursor {
+
+            display: inline-block;
+
+            width: 8px;
+
+            height: 15px;
+
+            margin-left: 4px;
+
+            background:
+                #64d9ff;
+
+            vertical-align: -2px;
+
+            animation:
+                cursorBlink
+                0.8s
+                steps(1)
+                infinite;
+        }
+
+        @keyframes cursorBlink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           BOOT PROGRESS
+           ФІКСОВАНА ВИСОТА — НІЧОГО НЕ СКАЧЕ
+        ===================================================== */
+
+        .boot-progress-area {
+
+            position: absolute;
+
+            left: 28px;
+
+            right: 28px;
+
+            bottom: 22px;
+
+            height: 55px;
+
+            z-index: 3;
+        }
+
+        .boot-progress-info {
+
+            height: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            font-family:
+                "Courier New",
+                Consolas,
+                monospace;
+
+            font-size: 12px;
+        }
+
+        .boot-progress-label {
+
+            color:
+                rgba(255,255,255,0.5);
+
+            white-space: nowrap;
+        }
+
+        .boot-percent {
+
+            width: 45px;
+
+            height: 22px;
+
+            line-height: 22px;
+
+            text-align: right;
+
+            color:
+                #64d9ff;
+
+            font-weight: bold;
+
+            font-variant-numeric:
+                tabular-nums;
+
+            flex-shrink: 0;
+        }
+
+        .boot-progress {
+
+            width: 100%;
+
+            height: 7px;
+
+            margin-top: 7px;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            background:
+                rgba(255,255,255,0.08);
+
+            border:
+                1px solid
+                rgba(100,217,255,0.15);
+        }
+
+        .boot-progress-bar {
+
+            width: 0%;
+
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    #287da5,
+                    #64d9ff,
+                    #6ee7a8
+                );
+
+            box-shadow:
+                0 0 14px
+                rgba(80,210,255,0.55);
+
+            transition:
+                width 0.12s linear;
+        }
+
+
+        /* =====================================================
+           START SCREEN
         ===================================================== */
 
         .start-screen {
@@ -209,9 +608,7 @@
                 startAppear
                 1s
                 ease;
-
         }
-
 
         @keyframes startAppear {
 
@@ -222,9 +619,7 @@
                 transform:
                     translateY(25px)
                     scale(0.96);
-
             }
-
 
             to {
 
@@ -233,11 +628,8 @@
                 transform:
                     translateY(0)
                     scale(1);
-
             }
-
         }
-
 
         .start-title {
 
@@ -253,9 +645,7 @@
             text-shadow:
                 0 4px 20px
                 rgba(0,0,0,0.35);
-
         }
-
 
         .start-text {
 
@@ -266,9 +656,7 @@
             opacity: 0.85;
 
             margin-bottom: 30px;
-
         }
-
 
         .date-input {
 
@@ -299,17 +687,13 @@
 
             transition:
                 0.3s;
-
         }
-
 
         .date-input::placeholder {
 
             color:
                 rgba(255,255,255,0.55);
-
         }
-
 
         .date-input:focus {
 
@@ -322,14 +706,7 @@
             box-shadow:
                 0 0 25px
                 rgba(255,255,255,0.12);
-
         }
-
-
-        /* =====================================================
-           КНОПКА «ВІДКРИТИ»
-           СИНЯ ЗАМІСТЬ РОЖЕВОЇ
-        ===================================================== */
 
         .start-button {
 
@@ -364,9 +741,7 @@
 
             transition:
                 0.25s;
-
         }
-
 
         .start-button:hover {
 
@@ -383,17 +758,13 @@
             box-shadow:
                 0 14px 35px
                 rgba(0,0,0,0.35);
-
         }
-
 
         .start-button:active {
 
             transform:
                 scale(0.97);
-
         }
-
 
         .error {
 
@@ -405,13 +776,11 @@
             font-size: 15px;
 
             min-height: 20px;
-
         }
 
 
         /* =====================================================
-           КОНВЕРТ — ГЛИБОКИЙ ОКЕАН
-           ЗАКРИТА ТЕМНА ВНУТРІШНЯ ЧАСТИНА
+           КОНВЕРТ
         ===================================================== */
 
         .envelope-wrapper {
@@ -433,9 +802,7 @@
                 50% 45%;
 
             cursor: pointer;
-
         }
-
 
         .envelope {
 
@@ -472,9 +839,7 @@
                     .2,
                     1
                 );
-
         }
-
 
         .envelope::before {
 
@@ -528,9 +893,7 @@
                 translateZ(-15px);
 
             z-index: 0;
-
         }
-
 
         .envelope::after {
 
@@ -558,9 +921,7 @@
                 translateZ(-18px);
 
             z-index: 0;
-
         }
-
 
         .envelope.opened {
 
@@ -569,9 +930,7 @@
                 translateZ(0)
                 scale(0.92)
                 rotateX(0deg);
-
         }
-
 
         .envelope-body {
 
@@ -628,9 +987,7 @@
                 translateZ(-5px);
 
             z-index: 1;
-
         }
-
 
         .envelope-body::before {
 
@@ -658,9 +1015,7 @@
                 );
 
             pointer-events: none;
-
         }
-
 
         .envelope-body::after {
 
@@ -691,9 +1046,7 @@
             opacity: 0.4;
 
             pointer-events: none;
-
         }
-
 
         .envelope-left {
 
@@ -747,9 +1100,7 @@
                 preserve-3d;
 
             z-index: 3;
-
         }
-
 
         .envelope-left::before {
 
@@ -782,9 +1133,7 @@
                 );
 
             pointer-events: none;
-
         }
-
 
         .envelope-left::after {
 
@@ -812,9 +1161,7 @@
                 );
 
             transform:
-                rotate(
-                    -45deg
-                );
+                rotate(-45deg);
 
             transform-origin:
                 top center;
@@ -828,9 +1175,7 @@
             opacity: 1;
 
             pointer-events: none;
-
         }
-
 
         .envelope-right {
 
@@ -884,9 +1229,7 @@
                 preserve-3d;
 
             z-index: 3;
-
         }
-
 
         .envelope-right::before {
 
@@ -919,9 +1262,7 @@
                 );
 
             pointer-events: none;
-
         }
-
 
         .envelope-right::after {
 
@@ -949,9 +1290,7 @@
                 );
 
             transform:
-                rotate(
-                    45deg
-                );
+                rotate(45deg);
 
             transform-origin:
                 top center;
@@ -965,9 +1304,7 @@
             opacity: 1;
 
             pointer-events: none;
-
         }
-
 
         .envelope-bottom {
 
@@ -1017,12 +1354,7 @@
                 preserve-3d;
 
             z-index: 4;
-
-            border-top:
-                none;
-
         }
-
 
         .envelope-bottom::before {
 
@@ -1059,9 +1391,7 @@
                 );
 
             z-index: 2;
-
         }
-
 
         .envelope-bottom::after {
 
@@ -1086,9 +1416,7 @@
                 );
 
             pointer-events: none;
-
         }
-
 
         .envelope-flap {
 
@@ -1173,9 +1501,7 @@
 
             border-radius:
                 12px 12px 0 0;
-
         }
-
 
         .envelope-flap::before {
 
@@ -1204,9 +1530,7 @@
                 rotate(8deg);
 
             pointer-events: none;
-
         }
-
 
         .envelope-flap::after {
 
@@ -1243,9 +1567,7 @@
                     1px 1px 2px
                     rgba(0,0,0,0.75)
                 );
-
         }
-
 
         .envelope.opened
         .envelope-flap {
@@ -1255,15 +1577,7 @@
                 rotateX(180deg);
 
             z-index: 1;
-
-            filter:
-                drop-shadow(
-                    0 -4px 5px
-                    rgba(5,25,45,0.22)
-                );
-
         }
-
 
         .wax-seal {
 
@@ -1338,9 +1652,7 @@
             user-select: none;
 
             z-index: 10;
-
         }
-
 
         .wax-seal::before {
 
@@ -1365,9 +1677,7 @@
                 inset
                 0 -2px 3px
                 rgba(0,0,0,0.25);
-
         }
-
 
         .wax-seal::after {
 
@@ -1391,9 +1701,7 @@
 
             transform:
                 rotate(-25deg);
-
         }
-
 
         .wax-seal:hover {
 
@@ -1404,27 +1712,7 @@
                 )
                 translateZ(55px)
                 scale(1.07);
-
-            box-shadow:
-
-                0 12px 20px
-                rgba(0,0,0,0.48),
-
-                0 4px 0
-                #09271e,
-
-                0 0 0 3px
-                rgba(11,41,31,0.9),
-
-                0 0 22px
-                rgba(80,180,140,0.18),
-
-                inset
-                0 4px 6px
-                rgba(255,255,255,0.25);
-
         }
-
 
         .wax-seal:active {
 
@@ -1435,18 +1723,7 @@
                 )
                 translateZ(55px)
                 scale(0.95);
-
-            box-shadow:
-
-                0 4px 7px
-                rgba(0,0,0,0.4),
-
-                inset
-                0 -3px 5px
-                rgba(0,0,0,0.3);
-
         }
-
 
         .envelope.opened
         .wax-seal {
@@ -1460,9 +1737,7 @@
                 )
                 translateZ(55px)
                 scale(0.4);
-
         }
-
 
         .envelope-wrapper::before {
 
@@ -1490,9 +1765,7 @@
                 translateZ(-30px);
 
             pointer-events: none;
-
         }
-
 
         .click-hint {
 
@@ -1513,32 +1786,23 @@
                 1.8s
                 ease-in-out
                 infinite;
-
         }
-
 
         @keyframes hintPulse {
 
             0%,
             100% {
-
                 opacity: 0.45;
-
             }
-
 
             50% {
-
                 opacity: 1;
-
             }
-
         }
 
 
         /* =====================================================
            ЛИСТ
-           ЗМЕНЕНО: ТЕПЕР ВІН НЕ ВИХОДИТЬ ЗА МЕЖІ ЕКРАНА
         ===================================================== */
 
         .letter {
@@ -1595,12 +1859,13 @@
             z-index: 20;
 
             overflow-y: auto;
+
             overflow-x: hidden;
 
             scrollbar-width: thin;
 
+            scroll-behavior: smooth;
         }
-
 
         .letter.show {
 
@@ -1611,9 +1876,7 @@
                 scale(1);
 
             pointer-events: auto;
-
         }
-
 
         .letter::before {
 
@@ -1648,9 +1911,7 @@
                 );
 
             pointer-events: none;
-
         }
-
 
         .letter-header {
 
@@ -1666,9 +1927,7 @@
 
             color:
                 #8c315f;
-
         }
-
 
         .text-area {
 
@@ -1690,9 +1949,7 @@
 
             padding:
                 10px 5px;
-
         }
-
 
         .letter-line {
 
@@ -1720,9 +1977,7 @@
             transition:
                 opacity 0.9s ease,
                 transform 0.9s ease;
-
         }
-
 
         .letter-line.visible {
 
@@ -1731,9 +1986,7 @@
             transform:
                 translateY(0)
                 scale(1);
-
         }
-
 
         .controls {
 
@@ -1758,9 +2011,7 @@
 
             transition:
                 opacity 0.6s ease;
-
         }
-
 
         .button-row {
 
@@ -1771,9 +2022,7 @@
             gap: 10px;
 
             flex-wrap: wrap;
-
         }
-
 
         .control-button {
 
@@ -1796,9 +2045,7 @@
 
             transition:
                 0.2s;
-
         }
-
 
         .control-button:hover {
 
@@ -1807,17 +2054,13 @@
 
             transform:
                 translateY(-1px);
-
         }
-
 
         .control-button:active {
 
             transform:
                 scale(0.96);
-
         }
-
 
         .photo-container {
 
@@ -1850,9 +2093,7 @@
                 );
 
             pointer-events: none;
-
         }
-
 
         .photo-container.show {
 
@@ -1864,9 +2105,7 @@
                 rotate(0);
 
             pointer-events: auto;
-
         }
-
 
         .photo-frame {
 
@@ -1893,9 +2132,7 @@
                 4s
                 ease-in-out
                 infinite;
-
         }
-
 
         @keyframes photoFloat {
 
@@ -1905,20 +2142,15 @@
                 transform:
                     rotate(-1deg)
                     translateY(0);
-
             }
-
 
             50% {
 
                 transform:
                     rotate(1deg)
                     translateY(-5px);
-
             }
-
         }
-
 
         .photo-frame::before {
 
@@ -1944,28 +2176,19 @@
                 2s
                 ease-in-out
                 infinite;
-
         }
-
 
         @keyframes photoGlow {
 
             0%,
             100% {
-
                 opacity: 0.35;
-
             }
-
 
             50% {
-
                 opacity: 1;
-
             }
-
         }
-
 
         .photo-frame img {
 
@@ -1978,9 +2201,7 @@
             object-fit: contain;
 
             border-radius: 8px;
-
         }
-
 
         .final-message {
 
@@ -2005,9 +2226,7 @@
             transition:
                 opacity 1s ease,
                 transform 1s ease;
-
         }
-
 
         .final-message.show {
 
@@ -2015,9 +2234,12 @@
 
             transform:
                 translateY(0);
-
         }
 
+
+        /* =====================================================
+           SOUND BUTTON
+        ===================================================== */
 
         .sound-button {
 
@@ -2060,9 +2282,7 @@
 
             transition:
                 0.2s;
-
         }
-
 
         .sound-button:hover {
 
@@ -2076,32 +2296,58 @@
 
             transform:
                 scale(1.05);
-
         }
-
 
         .hidden {
-
             display: none !important;
-
         }
 
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
 
         @media (max-width: 600px) {
 
             body {
-
                 padding: 15px;
-
             }
-
 
             .container {
-
                 min-height: 600px;
-
             }
 
+            .boot-screen {
+
+                min-height: 430px;
+
+                padding: 20px;
+            }
+
+            .boot-header {
+                margin-bottom: 18px;
+            }
+
+            .boot-terminal {
+                height: 275px;
+            }
+
+            .boot-progress-area {
+
+                left: 20px;
+
+                right: 20px;
+
+                bottom: 18px;
+            }
+
+            .boot-line {
+
+                min-height: 28px;
+
+                line-height: 28px;
+
+            }
 
             .letter {
 
@@ -2116,25 +2362,18 @@
                     25px
                     18px
                     22px;
-
             }
-
 
             .letter-header {
 
                 font-size: 24px;
 
                 margin-bottom: 25px;
-
             }
-
 
             .text-area {
-
                 min-height: auto;
-
             }
-
 
             .letter-line {
 
@@ -2143,16 +2382,11 @@
                 line-height: 1.5;
 
                 margin-bottom: 16px;
-
             }
-
 
             .envelope-wrapper {
-
                 height: 270px;
-
             }
-
 
             .wax-seal {
 
@@ -2160,18 +2394,14 @@
                 height: 50px;
 
                 font-size: 24px;
-
             }
-
 
             .click-hint {
 
                 bottom: -50px;
 
                 font-size: 14px;
-
             }
-
 
             .control-button {
 
@@ -2179,18 +2409,14 @@
                     10px 13px;
 
                 font-size: 14px;
-
             }
-
 
             .final-message {
 
                 font-size: 18px;
 
                 line-height: 1.4;
-
             }
-
         }
 
     </style>
@@ -2203,6 +2429,10 @@
 
     <div id="particles"></div>
 
+
+    <!-- =====================================================
+         КНОПКА ЗВУКУ
+    ====================================================== -->
 
     <button
         class="sound-button"
@@ -2217,8 +2447,82 @@
     <div class="container">
 
 
+        <!-- =================================================
+             BOOT SCREEN
+        ================================================== -->
+
         <div
-            class="start-screen"
+            class="boot-screen"
+            id="bootScreen"
+        >
+
+            <div class="boot-header">
+
+                <div class="boot-logo">
+                    SYSTEM://PRIVATE_ACCESS
+                </div>
+
+                <div
+                    class="boot-status"
+                    id="bootStatus"
+                >
+                    INITIALIZING
+                </div>
+
+            </div>
+
+
+            <!--
+                Термінал тепер має власну прокрутку.
+                Останній рядок завжди буде видно.
+            -->
+
+            <div
+                class="boot-terminal"
+                id="bootTerminal"
+            ></div>
+
+
+            <!-- ФІКСОВАНА ПЛАШКА ПРОГРЕСУ -->
+
+            <div class="boot-progress-area">
+
+                <div class="boot-progress-info">
+
+                    <div class="boot-progress-label">
+                        SYSTEM INITIALIZATION
+                    </div>
+
+                    <div
+                        class="boot-percent"
+                        id="bootPercent"
+                    >
+                        0%
+                    </div>
+
+                </div>
+
+
+                <div class="boot-progress">
+
+                    <div
+                        class="boot-progress-bar"
+                        id="bootProgressBar"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ЕКРАН ВВЕДЕННЯ ДАТИ
+        ================================================== -->
+
+        <div
+            class="start-screen hidden"
             id="startScreen"
         >
 
@@ -2226,11 +2530,9 @@
                 ✉️ Маленький сюрприз
             </div>
 
-
             <div class="start-text">
                 Введіть код доступу😏
             </div>
-
 
             <input
                 type="text"
@@ -2240,7 +2542,6 @@
                 autocomplete="off"
             >
 
-
             <button
                 class="start-button"
                 id="startButton"
@@ -2249,7 +2550,6 @@
                 Відкрити ✨
             </button>
 
-
             <div
                 class="error"
                 id="errorMessage"
@@ -2257,6 +2557,10 @@
 
         </div>
 
+
+        <!-- =================================================
+             КОНВЕРТ
+        ================================================== -->
 
         <div
             class="envelope-wrapper hidden"
@@ -2279,13 +2583,11 @@
 
                 <div class="envelope-flap"></div>
 
-
                 <div class="wax-seal">
                     🟢
                 </div>
 
             </div>
-
 
             <div class="click-hint">
                 Натисни на конверт 😉
@@ -2294,21 +2596,23 @@
         </div>
 
 
+        <!-- =================================================
+             ЛИСТ
+        ================================================== -->
+
         <div
             class="letter hidden"
             id="letter"
         >
 
             <div class="letter-header">
-                  Для тебе
+                Для тебе
             </div>
-
 
             <div
                 class="text-area"
                 id="textArea"
             ></div>
-
 
             <div
                 class="photo-container"
@@ -2326,14 +2630,12 @@
 
             </div>
 
-
             <div
                 class="final-message"
                 id="finalMessage"
             >
                 З повагою й найтеплішою турботою, Людина-кущ 🟢
             </div>
-
 
             <div
                 class="controls"
@@ -2357,6 +2659,24 @@
         </div>
 
     </div>
+
+
+    <!-- =====================================================
+         ЗВУКИ
+    ====================================================== -->
+
+    <audio
+        id="bootTypingSound"
+        preload="auto"
+        loop
+    >
+
+        <source
+            src="{{ url_for('static', filename='sounds/boot-typing.mp3') }}"
+            type="audio/mpeg"
+        >
+
+    </audio>
 
 
     <audio
@@ -2414,6 +2734,937 @@
 
     <script>
 
+
+        /* =====================================================
+           BOOT SEQUENCE
+        ===================================================== */
+
+        const bootLines = [
+
+            {
+                text: "[BOOT] Initializing private access protocol...",
+                type: "command"
+            },
+
+            {
+                text: "[OK] Secure environment loaded.",
+                type: "success"
+            },
+
+            {
+                text: "[NET] Connecting to secure server...",
+                type: "command"
+            },
+
+            {
+                text: "[NET] Establishing encrypted connection...",
+                type: "command"
+            },
+
+            {
+                text: "[OK] Secure connection established.",
+                type: "success"
+            },
+
+            {
+                text: "[BIO] Scanning biometric signature...",
+                type: "command"
+            },
+
+            {
+                text: "[BIO] Eye pattern detected.",
+                type: "success"
+            },
+
+            {
+                text: "[SYS] Analyzing user profile...",
+                type: "command"
+            },
+
+            {
+                text: "[SYS] Cross-checking access permissions...",
+                type: "command"
+            },
+
+            {
+                text: "[WARN] Emotional vulnerability detected.",
+                type: "warning"
+            },
+
+            {
+                text: "[AI] Searching for positive memories...",
+                type: "pink"
+            },
+
+            {
+                text: "[AI] Access granted.",
+                type: "success"
+            },
+
+            {
+                text: "[SYSTEM] Preparing something special...",
+                type: "pink"
+            },
+
+            {
+                text: "[SYSTEM] Welcome, authorized user.",
+                type: "success"
+            }
+
+        ];
+
+
+        const bootScreen =
+            document.getElementById(
+                "bootScreen"
+            );
+
+
+        const bootTerminal =
+            document.getElementById(
+                "bootTerminal"
+            );
+
+
+        const bootPercent =
+            document.getElementById(
+                "bootPercent"
+            );
+
+
+        const bootProgressBar =
+            document.getElementById(
+                "bootProgressBar"
+            );
+
+
+        const bootStatus =
+            document.getElementById(
+                "bootStatus"
+            );
+
+
+        const bootTypingSound =
+            document.getElementById(
+                "bootTypingSound"
+            );
+
+
+        let soundsEnabled = true;
+
+
+        /*
+         * Швидкість друку одного символу.
+         */
+
+        const bootTypingSpeed = 24;
+
+
+        /*
+         * Пауза між рядками.
+         */
+
+        const bootLinePause = 260;
+
+
+        /*
+         * =====================================================
+         * СТЕЖЕННЯ ЗА ТЕКСТОМ
+         *
+         * Ця функція прокручує ТІЛЬКИ bootTerminal.
+         *
+         * Тому:
+         *
+         * - старі рядки йдуть вгору;
+         * - новий рядок завжди залишається видимим;
+         * - прогрес унизу не рухається;
+         * - вся сторінка не скаче.
+         * =====================================================
+         */
+
+        function followBootText() {
+
+            requestAnimationFrame(
+                () => {
+
+                    bootTerminal.scrollTop =
+                        bootTerminal.scrollHeight;
+
+                }
+            );
+
+        }
+
+
+        /*
+         * =====================================================
+         * ДРУК ОДНОГО РЯДКА
+         * =====================================================
+         */
+
+        async function typeBootLine(line) {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "boot-line";
+
+
+            bootTerminal.appendChild(
+                element
+            );
+
+
+            const textSpan =
+                document.createElement(
+                    "span"
+                );
+
+
+            textSpan.className =
+                line.type || "";
+
+
+            element.appendChild(
+                textSpan
+            );
+
+
+            const cursor =
+                document.createElement(
+                    "span"
+                );
+
+
+            cursor.className =
+                "boot-cursor";
+
+
+            element.appendChild(
+                cursor
+            );
+
+
+            /*
+             * Одразу показуємо новий рядок.
+             */
+
+            followBootText();
+
+
+            /*
+             * Друкуємо символ за символом.
+             */
+
+            for (
+                let i = 0;
+                i < line.text.length;
+                i++
+            ) {
+
+                textSpan.textContent +=
+                    line.text[i];
+
+
+                /*
+                 * Після кожного символу
+                 * термінал стежить за останнім рядком.
+                 */
+
+                followBootText();
+
+
+                await new Promise(
+                    resolve =>
+                        setTimeout(
+                            resolve,
+                            bootTypingSpeed
+                        )
+                );
+
+            }
+
+
+            /*
+             * Видаляємо курсор після
+             * завершення друку.
+             */
+
+            cursor.remove();
+
+
+            /*
+             * Ще раз прокручуємо вниз,
+             * щоб останній рядок точно залишився видимим.
+             */
+
+            followBootText();
+
+
+            await new Promise(
+                resolve =>
+                    setTimeout(
+                        resolve,
+                        bootLinePause
+                    )
+            );
+
+        }
+
+
+        /*
+         * =====================================================
+         * BOOT SEQUENCE
+         * =====================================================
+         */
+
+        async function runBootSequence() {
+
+            /*
+             * Запускаємо звук набору.
+             */
+
+            playSound(
+                "bootTypingSound"
+            );
+
+
+            for (
+                let i = 0;
+                i < bootLines.length;
+                i++
+            ) {
+
+                await typeBootLine(
+                    bootLines[i]
+                );
+
+
+                /*
+                 * Прогрес рахується
+                 * по завершених рядках.
+                 */
+
+                const progress =
+                    Math.round(
+                        (
+                            (i + 1) /
+                            bootLines.length
+                        ) * 100
+                    );
+
+
+                updateBootProgress(
+                    progress
+                );
+
+            }
+
+
+            /*
+             * Кінець boot-процесу.
+             */
+
+            stopSound(
+                "bootTypingSound"
+            );
+
+
+            bootStatus.textContent =
+                "ACCESS GRANTED";
+
+
+            bootStatus.style.color =
+                "#6ee7a8";
+
+
+            /*
+             * Маленька пауза після 100%.
+             */
+
+            await new Promise(
+                resolve =>
+                    setTimeout(
+                        resolve,
+                        800
+                    )
+            );
+
+
+            /*
+             * Плавне зникнення.
+             */
+
+            bootScreen.style.transition =
+                "opacity 0.8s ease, transform 0.8s ease";
+
+
+            bootScreen.style.opacity =
+                "0";
+
+
+            bootScreen.style.transform =
+                "scale(0.96) translateY(-10px)";
+
+
+            await new Promise(
+                resolve =>
+                    setTimeout(
+                        resolve,
+                        800
+                    )
+            );
+
+
+            bootScreen.classList.add(
+                "hidden"
+            );
+
+
+            startScreen.classList.remove(
+                "hidden"
+            );
+
+        }
+
+
+        /*
+         * =====================================================
+         * ПРОГРЕС
+         * =====================================================
+         */
+
+        function updateBootProgress(
+            progress
+        ) {
+
+            /*
+             * Ширина процентів ФІКСОВАНА.
+             *
+             * 1%
+             * 10%
+             * 100%
+             *
+             * нічого не рухають.
+             */
+
+            bootPercent.textContent =
+                progress + "%";
+
+
+            bootProgressBar.style.width =
+                progress + "%";
+
+        }
+
+
+        /* =====================================================
+           ЗВУК
+        ===================================================== */
+
+        function playSound(id) {
+
+            if (!soundsEnabled) {
+                return;
+            }
+
+
+            const audio =
+                document.getElementById(id);
+
+
+            if (!audio) {
+                return;
+            }
+
+
+            try {
+
+                audio.currentTime = 0;
+
+                const promise =
+                    audio.play();
+
+
+                if (
+                    promise !== undefined
+                ) {
+
+                    promise.catch(
+                        () => {}
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.log(
+                    "Помилка звуку:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        function stopSound(id) {
+
+            const audio =
+                document.getElementById(id);
+
+
+            if (!audio) {
+                return;
+            }
+
+
+            try {
+
+                audio.pause();
+
+                audio.currentTime = 0;
+
+            } catch (error) {
+
+                console.log(error);
+
+            }
+
+        }
+
+
+        function toggleSound() {
+
+            soundsEnabled =
+                !soundsEnabled;
+
+
+            if (!soundsEnabled) {
+
+                stopSound(
+                    "bootTypingSound"
+                );
+
+                stopSound(
+                    "envelopeSound"
+                );
+
+                stopSound(
+                    "typingSound"
+                );
+
+                stopSound(
+                    "photoSound"
+                );
+
+                stopSound(
+                    "finalSound"
+                );
+
+
+                soundButton.textContent =
+                    "🔇";
+
+            } else {
+
+                soundButton.textContent =
+                    "🔊";
+
+
+                /*
+                 * Якщо boot ще триває,
+                 * при повторному увімкненні
+                 * повертаємо звук набору.
+                 */
+
+                if (
+                    !bootScreen.classList.contains(
+                        "hidden"
+                    )
+                ) {
+
+                    playSound(
+                        "bootTypingSound"
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        /* =====================================================
+           PARTICLES
+        ===================================================== */
+
+        function createParticles() {
+
+            const particles =
+                document.getElementById(
+                    "particles"
+                );
+
+
+            for (
+                let i = 0;
+                i < 25;
+                i++
+            ) {
+
+                const particle =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                particle.className =
+                    "background-particle";
+
+
+                particle.style.left =
+                    Math.random() * 100 + "%";
+
+
+                particle.style.animationDuration =
+                    (
+                        8 +
+                        Math.random() * 12
+                    ) + "s";
+
+
+                particle.style.animationDelay =
+                    (
+                        -Math.random() * 15
+                    ) + "s";
+
+
+                particle.style.opacity =
+                    (
+                        0.2 +
+                        Math.random() * 0.5
+                    );
+
+
+                particles.appendChild(
+                    particle
+                );
+
+            }
+
+        }
+
+
+        createParticles();
+
+
+        /* =====================================================
+           START
+        ===================================================== */
+
+        const startScreen =
+            document.getElementById(
+                "startScreen"
+            );
+
+
+        const dateInput =
+            document.getElementById(
+                "dateInput"
+            );
+
+
+        const errorMessage =
+            document.getElementById(
+                "errorMessage"
+            );
+
+
+        const envelopeWrapper =
+            document.getElementById(
+                "envelopeWrapper"
+            );
+
+
+        const envelope =
+            document.getElementById(
+                "envelope"
+            );
+
+
+        const letter =
+            document.getElementById(
+                "letter"
+            );
+
+
+        const textArea =
+            document.getElementById(
+                "textArea"
+            );
+
+
+        const photoContainer =
+            document.getElementById(
+                "photoContainer"
+            );
+
+
+        const finalMessage =
+            document.getElementById(
+                "finalMessage"
+            );
+
+
+        const controls =
+            document.getElementById(
+                "controls"
+            );
+
+
+        const pauseButton =
+            document.getElementById(
+                "pauseButton"
+            );
+
+
+        const soundButton =
+            document.getElementById(
+                "soundButton"
+            );
+
+
+        /* =====================================================
+           BOOT ЗАПУСКАЄТЬСЯ ПЕРШИМ
+        ===================================================== */
+
+        window.addEventListener(
+            "load",
+            () => {
+
+                setTimeout(
+                    () => {
+
+                        runBootSequence();
+
+                    },
+                    500
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           ПЕРЕВІРКА ДАТИ
+        ===================================================== */
+
+        async function checkDate() {
+
+            const entered =
+                dateInput.value
+                    .trim()
+                    .toLowerCase();
+
+
+            if (!entered) {
+
+                errorMessage.textContent =
+                    "Введи дату 😏";
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/check-date",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    date: entered
+                                })
+
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (
+                    result.success
+                ) {
+
+                    errorMessage.textContent =
+                        "";
+
+
+                    startScreen.classList.add(
+                        "hidden"
+                    );
+
+
+                    envelopeWrapper.classList.remove(
+                        "hidden"
+                    );
+
+
+                    envelopeWrapper.style.animation =
+                        "startAppear 1s ease";
+
+                } else {
+
+                    errorMessage.textContent =
+                        result.message ||
+                        "Дата неправильна 😏";
+
+
+                    dateInput.classList.add(
+                        "shake"
+                    );
+
+
+                    setTimeout(
+                        () => {
+
+                            dateInput.classList.remove(
+                                "shake"
+                            );
+
+                        },
+                        500
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                errorMessage.textContent =
+                    "Щось пішло не так. Спробуй ще раз.";
+
+            }
+
+        }
+
+
+        dateInput.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    checkDate();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           КОНВЕРТ
+        ===================================================== */
+
+        let isEnvelopeOpened = false;
+
+
+        function openEnvelope() {
+
+            if (
+                isEnvelopeOpened
+            ) {
+
+                return;
+
+            }
+
+
+            isEnvelopeOpened = true;
+
+
+            playSound(
+                "envelopeSound"
+            );
+
+
+            envelope.classList.add(
+                "opened"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    envelopeWrapper.classList.add(
+                        "hidden"
+                    );
+
+
+                    letter.classList.remove(
+                        "hidden"
+                    );
+
+
+                    letter.scrollTop = 0;
+
+
+                    requestAnimationFrame(
+                        () => {
+
+                            letter.classList.add(
+                                "show"
+                            );
+
+                        }
+                    );
+
+                },
+                1200
+            );
+
+
+            setTimeout(
+                () => {
+
+                    startText();
+
+                },
+                2200
+            );
+
+        }
+
+
+        /* =====================================================
+           ТЕКСТ ЛИСТА
+        ===================================================== */
+
         const letterLines = [
 
             "Я бачу, що тобі може бути важко: робота, навчання, допомога по дому, дорога і купа всього іншого.",
@@ -2450,374 +3701,20 @@
 
 
         let currentLine = 0;
+
         let paused = false;
+
         let lineTimer = null;
+
         let lineStartTime = 0;
+
         let remainingTime = 0;
-        let isEnvelopeOpened = false;
-        let soundsEnabled = true;
+
         let finishStarted = false;
 
+        let userIsScrolling = false;
 
-        const startScreen =
-            document.getElementById("startScreen");
-
-
-        const dateInput =
-            document.getElementById("dateInput");
-
-
-        const errorMessage =
-            document.getElementById("errorMessage");
-
-
-        const envelopeWrapper =
-            document.getElementById("envelopeWrapper");
-
-
-        const envelope =
-            document.getElementById("envelope");
-
-
-        const letter =
-            document.getElementById("letter");
-
-
-        const textArea =
-            document.getElementById("textArea");
-
-
-        const photoContainer =
-            document.getElementById("photoContainer");
-
-
-        const finalMessage =
-            document.getElementById("finalMessage");
-
-
-        const controls =
-            document.getElementById("controls");
-
-
-        const pauseButton =
-            document.getElementById("pauseButton");
-
-
-        const soundButton =
-            document.getElementById("soundButton");
-
-
-        function createParticles() {
-
-            const particles =
-                document.getElementById("particles");
-
-            for (
-                let i = 0;
-                i < 25;
-                i++
-            ) {
-
-                const particle =
-                    document.createElement("div");
-
-                particle.className =
-                    "background-particle";
-
-                particle.style.left =
-                    Math.random() * 100 + "%";
-
-                particle.style.animationDuration =
-                    (
-                        8 +
-                        Math.random() * 12
-                    ) + "s";
-
-                particle.style.animationDelay =
-                    (
-                        -Math.random() * 15
-                    ) + "s";
-
-                particle.style.opacity =
-                    (
-                        0.2 +
-                        Math.random() * 0.5
-                    );
-
-                particles.appendChild(
-                    particle
-                );
-
-            }
-
-        }
-
-
-        createParticles();
-
-
-        function playSound(id) {
-
-            if (!soundsEnabled) {
-                return;
-            }
-
-            const audio =
-                document.getElementById(id);
-
-            if (!audio) {
-                return;
-            }
-
-            try {
-
-                audio.currentTime = 0;
-
-                const promise =
-                    audio.play();
-
-                if (
-                    promise !== undefined
-                ) {
-
-                    promise.catch(
-                        () => {}
-                    );
-
-                }
-
-            } catch (error) {
-
-                console.log(
-                    "Помилка звуку:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        function stopSound(id) {
-
-            const audio =
-                document.getElementById(id);
-
-            if (!audio) {
-                return;
-            }
-
-            try {
-
-                audio.pause();
-
-                audio.currentTime = 0;
-
-            } catch (error) {
-
-                console.log(error);
-
-            }
-
-        }
-
-
-        function toggleSound() {
-
-            soundsEnabled =
-                !soundsEnabled;
-
-            if (!soundsEnabled) {
-
-                stopSound("envelopeSound");
-                stopSound("typingSound");
-                stopSound("photoSound");
-                stopSound("finalSound");
-
-                soundButton.textContent =
-                    "🔇";
-
-            } else {
-
-                soundButton.textContent =
-                    "🔊";
-
-            }
-
-        }
-
-
-        async function checkDate() {
-
-            const entered =
-                dateInput.value
-                    .trim()
-                    .toLowerCase();
-
-            if (!entered) {
-
-                errorMessage.textContent =
-                    "Введи дату 😏";
-
-                return;
-
-            }
-
-            try {
-
-                const response =
-                    await fetch(
-                        "/check-date",
-                        {
-
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body:
-                                JSON.stringify({
-                                    date: entered
-                                })
-
-                        }
-                    );
-
-
-                const result =
-                    await response.json();
-
-
-                if (
-                    result.success
-                ) {
-
-                    errorMessage.textContent =
-                        "";
-
-                    startScreen.classList.add(
-                        "hidden"
-                    );
-
-                    envelopeWrapper.classList.remove(
-                        "hidden"
-                    );
-
-                    envelopeWrapper.style.animation =
-                        "startAppear 1s ease";
-
-                } else {
-
-                    errorMessage.textContent =
-                        result.message ||
-                        "Дата неправильна 😏";
-
-                    dateInput.classList.add(
-                        "shake"
-                    );
-
-                    setTimeout(
-                        () => {
-
-                            dateInput.classList.remove(
-                                "shake"
-                            );
-
-                        },
-                        500
-                    );
-
-                }
-
-
-            } catch (error) {
-
-                console.error(
-                    error
-                );
-
-                errorMessage.textContent =
-                    "Щось пішло не так. Спробуй ще раз.";
-
-            }
-
-        }
-
-
-        dateInput.addEventListener(
-            "keydown",
-            function(event) {
-
-                if (
-                    event.key === "Enter"
-                ) {
-
-                    checkDate();
-
-                }
-
-            }
-        );
-
-
-        function openEnvelope() {
-
-            if (
-                isEnvelopeOpened
-            ) {
-
-                return;
-
-            }
-
-            isEnvelopeOpened = true;
-
-            playSound(
-                "envelopeSound"
-            );
-
-            envelope.classList.add(
-                "opened"
-            );
-
-            setTimeout(
-                () => {
-
-                    envelopeWrapper.classList.add(
-                        "hidden"
-                    );
-
-                    letter.classList.remove(
-                        "hidden"
-                    );
-
-                    requestAnimationFrame(
-                        () => {
-
-                            letter.classList.add(
-                                "show"
-                            );
-
-                        }
-                    );
-
-                },
-                1200
-            );
-
-
-            setTimeout(
-                () => {
-
-                    startText();
-
-                },
-                2200
-            );
-
-        }
+        let scrollResumeTimer = null;
 
 
         function startText() {
@@ -2826,31 +3723,53 @@
                 lineTimer
             );
 
+
             currentLine = 0;
+
             paused = false;
+
             finishStarted = false;
+
             remainingTime = 0;
+
             lineStartTime = 0;
+
+            userIsScrolling = false;
+
+
+            clearTimeout(
+                scrollResumeTimer
+            );
+
+
+            letter.scrollTop = 0;
+
 
             pauseButton.textContent =
                 "⏸️ Пауза";
 
+
             textArea.innerHTML =
                 "";
+
 
             photoContainer.classList.remove(
                 "show"
             );
 
+
             finalMessage.classList.remove(
                 "show"
             );
 
+
             controls.style.opacity =
                 "1";
 
+
             controls.style.pointerEvents =
                 "auto";
+
 
             setTimeout(
                 () => {
@@ -2868,15 +3787,110 @@
         }
 
 
+        letter.addEventListener(
+            "scroll",
+            function() {
+
+                userIsScrolling = true;
+
+
+                clearTimeout(
+                    scrollResumeTimer
+                );
+
+
+                scrollResumeTimer =
+                    setTimeout(
+                        () => {
+
+                            userIsScrolling =
+                                false;
+
+                        },
+                        800
+                    );
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        function scrollToNewLine(
+            element
+        ) {
+
+            if (userIsScrolling) {
+                return;
+            }
+
+
+            setTimeout(
+                () => {
+
+                    if (userIsScrolling) {
+                        return;
+                    }
+
+
+                    const letterRect =
+                        letter.getBoundingClientRect();
+
+
+                    const elementRect =
+                        element.getBoundingClientRect();
+
+
+                    const bottomPadding =
+                        45;
+
+
+                    const isBelow =
+                        elementRect.bottom >
+                        letterRect.bottom -
+                        bottomPadding;
+
+
+                    if (!isBelow) {
+                        return;
+                    }
+
+
+                    const scrollAmount =
+                        elementRect.bottom -
+                        letterRect.bottom +
+                        bottomPadding;
+
+
+                    letter.scrollBy({
+
+                        top:
+                            scrollAmount,
+
+                        behavior:
+                            "smooth"
+
+                    });
+
+                },
+                100
+            );
+
+        }
+
+
         function showCurrentLine() {
 
             clearTimeout(
                 lineTimer
             );
 
+
             stopSound(
                 "typingSound"
             );
+
 
             if (
                 currentLine >=
@@ -2911,6 +3925,11 @@
 
 
             textArea.appendChild(
+                newLine
+            );
+
+
+            scrollToNewLine(
                 newLine
             );
 
@@ -2989,6 +4008,7 @@
                     "typingSound"
                 );
 
+
                 finishText();
 
                 return;
@@ -3006,6 +4026,7 @@
             if (!paused) {
 
                 paused = true;
+
 
                 clearTimeout(
                     lineTimer
@@ -3036,6 +4057,7 @@
             } else {
 
                 paused = false;
+
 
                 pauseButton.textContent =
                     "⏸️ Пауза";
@@ -3072,9 +4094,7 @@
         function finishText() {
 
             if (finishStarted) {
-
                 return;
-
             }
 
 
@@ -3126,6 +4146,28 @@
             setTimeout(
                 () => {
 
+                    if (!userIsScrolling) {
+
+                        photoContainer.scrollIntoView({
+
+                            behavior:
+                                "smooth",
+
+                            block:
+                                "center"
+
+                        });
+
+                    }
+
+                },
+                150
+            );
+
+
+            setTimeout(
+                () => {
+
                     finalMessage.classList.add(
                         "show"
                     );
@@ -3135,12 +4177,38 @@
                         "finalSound"
                     );
 
+
+                    setTimeout(
+                        () => {
+
+                            if (!userIsScrolling) {
+
+                                finalMessage.scrollIntoView({
+
+                                    behavior:
+                                        "smooth",
+
+                                    block:
+                                        "center"
+
+                                });
+
+                            }
+
+                        },
+                        100
+                    );
+
                 },
                 900
             );
 
         }
 
+
+        /* =====================================================
+           SHAKE
+        ===================================================== */
 
         const shakeStyle =
             document.createElement(
@@ -3196,6 +4264,10 @@
             shakeStyle
         );
 
+
+        /* =====================================================
+           PHOTO ERROR
+        ===================================================== */
 
         const photo =
             document.querySelector(
