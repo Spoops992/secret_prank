@@ -14,10 +14,6 @@
 
     <style>
 
-        /* =====================================================
-           RESET
-        ===================================================== */
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -74,6 +70,789 @@
                     #702f55,
                     #25152e
                 );
+        }
+
+
+        /* =====================================================
+           БІОМЕТРИЧНИЙ ЕКРАН
+        ===================================================== */
+
+        .biometric-screen {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 200;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+
+                radial-gradient(
+                    circle at center,
+                    rgba(0,190,255,0.08),
+                    transparent 35%
+                ),
+
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(40,100,255,0.08),
+                    transparent 45%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #03070d,
+                    #07121c,
+                    #02060b
+                );
+
+            transition:
+                opacity 0.9s ease,
+                transform 0.9s ease;
+
+            overflow: hidden;
+
+            user-select: none;
+        }
+
+        .biometric-screen::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    transparent 50%,
+                    rgba(80,200,255,0.025) 50%
+                );
+
+            background-size:
+                100% 4px;
+
+            pointer-events: none;
+
+            opacity: 0.5;
+        }
+
+        .biometric-screen.fade-out {
+
+            opacity: 0;
+
+            transform:
+                scale(1.04);
+
+            pointer-events: none;
+        }
+
+        .biometric-container {
+
+            width:
+                min(
+                    480px,
+                    92vw
+                );
+
+            text-align: center;
+
+            position: relative;
+
+            z-index: 2;
+
+            animation:
+                biometricAppear
+                1s
+                ease;
+        }
+
+        @keyframes biometricAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(25px)
+                    scale(0.96);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+        .biometric-system {
+
+            font-family:
+                "Courier New",
+                Consolas,
+                monospace;
+
+            color:
+                #64d9ff;
+
+            font-size:
+                clamp(
+                    11px,
+                    3vw,
+                    14px
+                );
+
+            letter-spacing:
+                2px;
+
+            margin-bottom:
+                12px;
+
+            text-shadow:
+                0 0 15px
+                rgba(80,210,255,0.6);
+        }
+
+        .biometric-title {
+
+            font-family:
+                "Courier New",
+                Consolas,
+                monospace;
+
+            font-size:
+                clamp(
+                    18px,
+                    5vw,
+                    26px
+                );
+
+            font-weight:
+                bold;
+
+            letter-spacing:
+                1px;
+
+            margin-bottom:
+                10px;
+
+            color:
+                #e9faff;
+
+            text-shadow:
+                0 0 20px
+                rgba(100,220,255,0.25);
+        }
+
+        .biometric-subtitle {
+
+            color:
+                rgba(220,240,248,0.58);
+
+            font-family:
+                "Courier New",
+                Consolas,
+                monospace;
+
+            font-size:
+                clamp(
+                    11px,
+                    3.2vw,
+                    14px
+                );
+
+            line-height:
+                1.5;
+
+            margin-bottom:
+                28px;
+        }
+
+        .fingerprint-area {
+
+            width:
+                min(
+                    280px,
+                    70vw
+                );
+
+            aspect-ratio:
+                1 / 1;
+
+            margin:
+                0 auto 22px;
+
+            position:
+                relative;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+        }
+
+        .fingerprint-scanner {
+
+            width:
+                100%;
+
+            height:
+                100%;
+
+            position:
+                relative;
+
+            cursor:
+                pointer;
+
+            touch-action:
+                none;
+
+            -webkit-user-select:
+                none;
+
+            user-select:
+                none;
+
+            -webkit-tap-highlight-color:
+                transparent;
+        }
+
+        .fingerprint-scanner svg {
+
+            width:
+                100%;
+
+            height:
+                100%;
+
+            overflow:
+                visible;
+
+            display:
+                block;
+        }
+
+        .fingerprint-base {
+
+            fill:
+                none;
+
+            stroke:
+                rgba(
+                    100,
+                    217,
+                    255,
+                    0.20
+                );
+
+            stroke-width:
+                2.2;
+
+            stroke-linecap:
+                round;
+
+            stroke-linejoin:
+                round;
+        }
+
+        .fingerprint-progress {
+
+            fill:
+                none;
+
+            stroke:
+                #64d9ff;
+
+            stroke-width:
+                2.8;
+
+            stroke-linecap:
+                round;
+
+            stroke-linejoin:
+                round;
+
+            filter:
+                drop-shadow(
+                    0 0 4px
+                    rgba(
+                        70,
+                        210,
+                        255,
+                        0.8
+                    )
+                );
+
+            opacity:
+                0;
+
+            clip-path:
+                inset(
+                    var(--scan-reveal, 100%)
+                    0
+                    0
+                    0
+                );
+
+            transition:
+                clip-path 0.25s linear,
+                opacity 0.25s ease;
+        }
+
+        .fingerprint-scanner.scanning
+        .fingerprint-progress {
+
+            opacity:
+                1;
+        }
+
+        .fingerprint-scanner.success
+        .fingerprint-progress {
+
+            stroke:
+                #6ee7a8;
+
+            filter:
+                drop-shadow(
+                    0 0 7px
+                    rgba(
+                        110,
+                        231,
+                        168,
+                        0.9
+                    )
+                );
+
+            opacity:
+                1;
+        }
+
+        .fingerprint-glow {
+
+            position:
+                absolute;
+
+            width:
+                60%;
+
+            height:
+                60%;
+
+            left:
+                20%;
+
+            top:
+                20%;
+
+            border-radius:
+                50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(
+                        80,
+                        210,
+                        255,
+                        0.10
+                    ),
+                    transparent 70%
+                );
+
+            filter:
+                blur(18px);
+
+            opacity:
+                0;
+
+            transition:
+                opacity 0.3s ease;
+        }
+
+        .fingerprint-scanner.scanning
+        .fingerprint-glow {
+
+            opacity:
+                1;
+
+            animation:
+                fingerprintGlow
+                1.1s
+                ease-in-out
+                infinite;
+        }
+
+        @keyframes fingerprintGlow {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(0.9);
+
+                opacity:
+                    0.35;
+            }
+
+            50% {
+
+                transform:
+                    scale(1.15);
+
+                opacity:
+                    0.8;
+            }
+        }
+
+        .scan-line {
+
+            position:
+                absolute;
+
+            left:
+                14%;
+
+            right:
+                14%;
+
+            top:
+                15%;
+
+            height:
+                2px;
+
+            border-radius:
+                10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #64d9ff,
+                    #b9f3ff,
+                    #64d9ff,
+                    transparent
+                );
+
+            box-shadow:
+                0 0 10px
+                rgba(
+                    80,
+                    210,
+                    255,
+                    0.85
+                );
+
+            opacity:
+                0;
+        }
+
+        .fingerprint-scanner.scanning
+        .scan-line {
+
+            opacity:
+                1;
+
+            animation:
+                scanLine
+                1.3s
+                ease-in-out
+                infinite;
+        }
+
+        @keyframes scanLine {
+
+            0% {
+
+                top:
+                    15%;
+            }
+
+            50% {
+
+                top:
+                    82%;
+            }
+
+            100% {
+
+                top:
+                    15%;
+            }
+        }
+
+        .biometric-percent {
+
+            font-family:
+                "Courier New",
+                Consolas,
+                monospace;
+
+            font-size:
+                clamp(
+                    25px,
+                    7vw,
+                    38px
+                );
+
+            font-weight:
+                bold;
+
+            color:
+                #64d9ff;
+
+            font-variant-numeric:
+                tabular-nums;
+
+            text-shadow:
+                0 0 18px
+                rgba(
+                    80,
+                    210,
+                    255,
+                    0.55
+                );
+
+            margin-bottom:
+                8px;
+
+            transition:
+                color 0.3s ease;
+        }
+
+        .biometric-status {
+
+            min-height:
+                22px;
+
+            font-family:
+                "Courier New",
+                Consolas,
+                monospace;
+
+            font-size:
+                clamp(
+                    10px,
+                    3vw,
+                    13px
+                );
+
+            color:
+                rgba(
+                    220,
+                    240,
+                    248,
+                    0.65
+                );
+
+            letter-spacing:
+                0.5px;
+
+            overflow-wrap:
+                anywhere;
+        }
+
+        .biometric-progress {
+
+            width:
+                min(
+                    330px,
+                    80vw
+                );
+
+            height:
+                5px;
+
+            margin:
+                20px auto 0;
+
+            border-radius:
+                10px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.07
+                );
+
+            overflow:
+                hidden;
+
+            border:
+                1px solid
+                rgba(
+                    100,
+                    217,
+                    255,
+                    0.12
+                );
+        }
+
+        .biometric-progress-bar {
+
+            width:
+                0%;
+
+            height:
+                100%;
+
+            border-radius:
+                inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #287da5,
+                    #64d9ff,
+                    #6ee7a8
+                );
+
+            box-shadow:
+                0 0 12px
+                rgba(
+                    80,
+                    210,
+                    255,
+                    0.55
+                );
+
+            transition:
+                width 0.18s linear;
+        }
+
+        .biometric-hint {
+
+            margin-top:
+                22px;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.42
+                );
+
+            font-family:
+                "Courier New",
+                Consolas,
+                monospace;
+
+            font-size:
+                clamp(
+                    10px,
+                    2.9vw,
+                    13px
+                );
+
+            animation:
+                biometricHint
+                1.8s
+                ease-in-out
+                infinite;
+        }
+
+        @keyframes biometricHint {
+
+            0%,
+            100% {
+
+                opacity:
+                    0.4;
+            }
+
+            50% {
+
+                opacity:
+                    0.9;
+            }
+        }
+
+        .biometric-corners {
+
+            position:
+                absolute;
+
+            inset:
+                18px;
+
+            pointer-events:
+                none;
+
+            opacity:
+                0.5;
+        }
+
+        .biometric-corners::before,
+        .biometric-corners::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                45px;
+
+            height:
+                45px;
+
+            border:
+                1px solid
+                rgba(
+                    100,
+                    217,
+                    255,
+                    0.25
+                );
+        }
+
+        .biometric-corners::before {
+
+            left:
+                0;
+
+            top:
+                0;
+
+            border-right:
+                none;
+
+            border-bottom:
+                none;
+        }
+
+        .biometric-corners::after {
+
+            right:
+                0;
+
+            bottom:
+                0;
+
+            border-left:
+                none;
+
+            border-top:
+                none;
         }
 
 
@@ -312,9 +1091,6 @@
 
         /* =====================================================
            BOOT TERMINAL
-           
-           ГОЛОВНА ЗМІНА:
-           термінал має власну область прокрутки.
         ===================================================== */
 
         .boot-terminal {
@@ -324,12 +1100,6 @@
             z-index: 2;
 
             height: 250px;
-
-            /*
-             * ВАЖЛИВО:
-             * тепер текст прокручується всередині
-             * цього блоку, а не виходить вниз.
-             */
 
             overflow-y: auto;
 
@@ -341,19 +1111,10 @@
 
             justify-content: flex-start;
 
-            /*
-             * Прибираємо видиму смугу прокрутки.
-             */
-
             scrollbar-width: none;
 
             scroll-behavior: smooth;
         }
-
-
-        /*
-         * Chrome / Edge / Safari
-         */
 
         .boot-terminal::-webkit-scrollbar {
             display: none;
@@ -384,9 +1145,7 @@
 
             word-break: break-word;
 
-            /*
-             * Рядки не стискаються.
-             */
+            overflow-wrap: anywhere;
 
             flex-shrink: 0;
 
@@ -412,11 +1171,6 @@
                     translateY(0);
             }
         }
-
-
-        /*
-         * Кольори рядків
-         */
 
         .boot-line .command {
             color:
@@ -481,7 +1235,6 @@
 
         /* =====================================================
            BOOT PROGRESS
-           ФІКСОВАНА ВИСОТА — НІЧОГО НЕ СКАЧЕ
         ===================================================== */
 
         .boot-progress-area {
@@ -523,6 +1276,12 @@
                 rgba(255,255,255,0.5);
 
             white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            padding-right: 10px;
         }
 
         .boot-percent {
@@ -640,7 +1399,11 @@
                     44px
                 );
 
+            line-height: 1.15;
+
             margin-bottom: 15px;
+
+            overflow-wrap: anywhere;
 
             text-shadow:
                 0 4px 20px
@@ -649,18 +1412,27 @@
 
         .start-text {
 
-            font-size: 17px;
+            font-size:
+                clamp(
+                    14px,
+                    4.2vw,
+                    17px
+                );
 
             line-height: 1.5;
 
             opacity: 0.85;
 
             margin-bottom: 30px;
+
+            overflow-wrap: anywhere;
         }
 
         .date-input {
 
             width: 100%;
+
+            max-width: 100%;
 
             padding:
                 16px 18px;
@@ -676,7 +1448,12 @@
 
             color: white;
 
-            font-size: 18px;
+            font-size:
+                clamp(
+                    15px,
+                    4.5vw,
+                    18px
+                );
 
             text-align: center;
 
@@ -693,6 +1470,8 @@
 
             color:
                 rgba(255,255,255,0.55);
+
+            opacity: 1;
         }
 
         .date-input:focus {
@@ -729,7 +1508,12 @@
 
             color: white;
 
-            font-size: 18px;
+            font-size:
+                clamp(
+                    15px,
+                    4.5vw,
+                    18px
+                );
 
             font-weight: bold;
 
@@ -773,9 +1557,16 @@
             color:
                 #ff9fbd;
 
-            font-size: 15px;
+            font-size:
+                clamp(
+                    13px,
+                    3.8vw,
+                    15px
+                );
 
             min-height: 20px;
+
+            overflow-wrap: anywhere;
         }
 
 
@@ -1777,7 +2568,12 @@
 
             text-align: center;
 
-            font-size: 16px;
+            font-size:
+                clamp(
+                    12px,
+                    3.8vw,
+                    16px
+                );
 
             opacity: 0.75;
 
@@ -1919,7 +2715,14 @@
 
             text-align: center;
 
-            font-size: 28px;
+            font-size:
+                clamp(
+                    22px,
+                    6vw,
+                    28px
+                );
+
+            line-height: 1.2;
 
             font-weight: bold;
 
@@ -1927,6 +2730,8 @@
 
             color:
                 #8c315f;
+
+            overflow-wrap: anywhere;
         }
 
         .text-area {
@@ -1955,10 +2760,12 @@
 
             width: 100%;
 
+            max-width: 100%;
+
             font-size:
                 clamp(
-                    18px,
-                    3.2vw,
+                    14px,
+                    4.4vw,
                     22px
                 );
 
@@ -1977,6 +2784,12 @@
             transition:
                 opacity 0.9s ease,
                 transform 0.9s ease;
+
+            overflow-wrap: anywhere;
+
+            word-break: normal;
+
+            hyphens: auto;
         }
 
         .letter-line.visible {
@@ -2045,6 +2858,13 @@
 
             transition:
                 0.2s;
+
+            font-size:
+                clamp(
+                    13px,
+                    3.8vw,
+                    15px
+                );
         }
 
         .control-button:hover {
@@ -2116,6 +2936,8 @@
                     420px,
                     100%
                 );
+
+            max-width: 100%;
 
             padding: 10px;
 
@@ -2196,6 +3018,8 @@
 
             width: 100%;
 
+            max-width: 100%;
+
             max-height: 500px;
 
             object-fit: contain;
@@ -2211,7 +3035,14 @@
 
             margin-top: 25px;
 
-            font-size: 20px;
+            font-size:
+                clamp(
+                    15px,
+                    4.5vw,
+                    20px
+                );
+
+            line-height: 1.4;
 
             font-weight: bold;
 
@@ -2226,6 +3057,8 @@
             transition:
                 opacity 1s ease,
                 transform 1s ease;
+
+            overflow-wrap: anywhere;
         }
 
         .final-message.show {
@@ -2304,103 +3137,389 @@
 
 
         /* =====================================================
+           ЗАГАЛЬНА АДАПТАЦІЯ ТЕКСТУ
+        ===================================================== */
+
+        .boot-logo,
+        .boot-status,
+        .boot-progress-label,
+        .start-title,
+        .start-text,
+        .letter-header,
+        .letter-line,
+        .final-message,
+        .click-hint {
+
+            overflow-wrap: anywhere;
+        }
+
+
+        /* =====================================================
            MOBILE
         ===================================================== */
 
         @media (max-width: 600px) {
 
             body {
-                padding: 15px;
+
+                padding:
+                    15px;
+
+                align-items:
+                    center;
             }
 
             .container {
-                min-height: 600px;
+
+                min-height:
+                    600px;
+
+                width:
+                    100%;
+            }
+
+            .biometric-screen {
+
+                padding:
+                    15px;
+            }
+
+            .biometric-container {
+
+                width:
+                    94vw;
+            }
+
+            .fingerprint-area {
+
+                width:
+                    min(
+                        260px,
+                        70vw
+                    );
+
+                margin-bottom:
+                    18px;
+            }
+
+            .biometric-title {
+
+                margin-bottom:
+                    8px;
+            }
+
+            .biometric-subtitle {
+
+                margin-bottom:
+                    18px;
+            }
+
+            .biometric-hint {
+
+                margin-top:
+                    18px;
             }
 
             .boot-screen {
 
-                min-height: 430px;
+                width:
+                    min(
+                        100%,
+                        94vw
+                    );
 
-                padding: 20px;
+                min-height:
+                    430px;
+
+                padding:
+                    20px;
+
+                border-radius:
+                    15px;
             }
 
             .boot-header {
-                margin-bottom: 18px;
+
+                margin-bottom:
+                    18px;
+
+                gap:
+                    10px;
+            }
+
+            .boot-logo {
+
+                font-size:
+                    clamp(
+                        11px,
+                        3.4vw,
+                        16px
+                    );
+
+                min-width:
+                    0;
+            }
+
+            .boot-status {
+
+                font-size:
+                    clamp(
+                        9px,
+                        2.8vw,
+                        12px
+                    );
+
+                flex-shrink:
+                    0;
             }
 
             .boot-terminal {
-                height: 275px;
-            }
 
-            .boot-progress-area {
-
-                left: 20px;
-
-                right: 20px;
-
-                bottom: 18px;
+                height:
+                    275px;
             }
 
             .boot-line {
 
-                min-height: 28px;
+                min-height:
+                    28px;
 
-                line-height: 28px;
+                line-height:
+                    28px;
 
+                font-size:
+                    clamp(
+                        10px,
+                        3.2vw,
+                        15px
+                    );
+            }
+
+            .boot-progress-area {
+
+                left:
+                    20px;
+
+                right:
+                    20px;
+
+                bottom:
+                    18px;
+            }
+
+            .boot-progress-info {
+
+                font-size:
+                    clamp(
+                        9px,
+                        2.8vw,
+                        12px
+                    );
+            }
+
+            .boot-percent {
+
+                width:
+                    42px;
+            }
+
+            .start-screen {
+
+                width:
+                    100%;
+
+                max-width:
+                    500px;
+
+                padding:
+                    0 5px;
+            }
+
+            .start-title {
+
+                font-size:
+                    clamp(
+                        25px,
+                        8vw,
+                        40px
+                    );
+            }
+
+            .start-text {
+
+                font-size:
+                    clamp(
+                        14px,
+                        4.5vw,
+                        17px
+                    );
+
+                margin-bottom:
+                    24px;
+            }
+
+            .date-input {
+
+                padding:
+                    14px 12px;
+
+                font-size:
+                    clamp(
+                        14px,
+                        4.2vw,
+                        18px
+                    );
+            }
+
+            .start-button {
+
+                padding:
+                    14px;
+
+                font-size:
+                    clamp(
+                        14px,
+                        4.2vw,
+                        18px
+                    );
             }
 
             .letter {
 
-                width: 94vw;
+                width:
+                    94vw;
 
-                max-height: 88vh;
-                max-height: 88dvh;
+                max-width:
+                    94vw;
 
-                min-height: auto;
+                max-height:
+                    88vh;
+
+                max-height:
+                    88dvh;
+
+                min-height:
+                    auto;
 
                 padding:
                     25px
                     18px
                     22px;
+
+                border-radius:
+                    15px;
             }
 
             .letter-header {
 
-                font-size: 24px;
+                font-size:
+                    clamp(
+                        21px,
+                        6.5vw,
+                        26px
+                    );
 
-                margin-bottom: 25px;
+                margin-bottom:
+                    25px;
             }
 
             .text-area {
-                min-height: auto;
+
+                min-height:
+                    auto;
+
+                padding:
+                    8px 2px;
             }
 
             .letter-line {
 
-                font-size: 18px;
+                font-size:
+                    clamp(
+                        14px,
+                        4.6vw,
+                        19px
+                    );
 
-                line-height: 1.5;
+                line-height:
+                    1.5;
 
-                margin-bottom: 16px;
+                margin-bottom:
+                    16px;
             }
 
             .envelope-wrapper {
-                height: 270px;
+
+                width:
+                    min(
+                        92vw,
+                        500px
+                    );
+
+                height:
+                    min(
+                        270px,
+                        60vw
+                    );
+
+                min-height:
+                    220px;
             }
 
             .wax-seal {
 
-                width: 50px;
-                height: 50px;
+                width:
+                    50px;
 
-                font-size: 24px;
+                height:
+                    50px;
+
+                font-size:
+                    24px;
             }
 
             .click-hint {
 
-                bottom: -50px;
+                bottom:
+                    -50px;
 
-                font-size: 14px;
+                font-size:
+                    clamp(
+                        12px,
+                        3.8vw,
+                        14px
+                    );
+            }
+
+            .photo-frame {
+
+                padding:
+                    7px;
+
+                border-radius:
+                    11px;
+            }
+
+            .photo-frame img {
+
+                max-height:
+                    55vh;
+
+                max-height:
+                    55dvh;
+            }
+
+            .final-message {
+
+                font-size:
+                    clamp(
+                        15px,
+                        4.5vw,
+                        18px
+                    );
+
+                line-height:
+                    1.4;
             }
 
             .control-button {
@@ -2408,14 +3527,320 @@
                 padding:
                     10px 13px;
 
-                font-size: 14px;
+                font-size:
+                    clamp(
+                        12px,
+                        3.7vw,
+                        14px
+                    );
+            }
+
+            .sound-button {
+
+                width:
+                    42px;
+
+                height:
+                    42px;
+
+                top:
+                    12px;
+
+                right:
+                    12px;
+
+                font-size:
+                    18px;
+            }
+        }
+
+
+        /* =====================================================
+           ДУЖЕ МАЛЕНЬКІ ТЕЛЕФОНИ
+        ===================================================== */
+
+        @media (max-width: 380px) {
+
+            body {
+
+                padding:
+                    10px;
+            }
+
+            .container {
+
+                min-height:
+                    560px;
+            }
+
+            .biometric-container {
+
+                width:
+                    96vw;
+            }
+
+            .fingerprint-area {
+
+                width:
+                    min(
+                        220px,
+                        68vw
+                    );
+            }
+
+            .biometric-title {
+
+                font-size:
+                    18px;
+            }
+
+            .biometric-subtitle {
+
+                font-size:
+                    10px;
+
+                margin-bottom:
+                    12px;
+            }
+
+            .biometric-percent {
+
+                font-size:
+                    28px;
+            }
+
+            .biometric-hint {
+
+                font-size:
+                    9px;
+            }
+
+            .boot-screen {
+
+                width:
+                    96vw;
+
+                min-height:
+                    400px;
+
+                padding:
+                    15px;
+
+                border-radius:
+                    13px;
+            }
+
+            .boot-header {
+
+                margin-bottom:
+                    14px;
+
+                padding-bottom:
+                    11px;
+            }
+
+            .boot-logo {
+
+                font-size:
+                    10px;
+
+                letter-spacing:
+                    0.5px;
+            }
+
+            .boot-status {
+
+                font-size:
+                    8px;
+            }
+
+            .boot-terminal {
+
+                height:
+                    245px;
+            }
+
+            .boot-line {
+
+                min-height:
+                    25px;
+
+                line-height:
+                    25px;
+
+                font-size:
+                    10px;
+            }
+
+            .boot-cursor {
+
+                width:
+                    6px;
+
+                height:
+                    12px;
+            }
+
+            .boot-progress-area {
+
+                left:
+                    15px;
+
+                right:
+                    15px;
+
+                bottom:
+                    14px;
+            }
+
+            .boot-progress-info {
+
+                font-size:
+                    8px;
+            }
+
+            .boot-percent {
+
+                width:
+                    35px;
+            }
+
+            .start-screen {
+
+                padding:
+                    0 2px;
+            }
+
+            .start-title {
+
+                font-size:
+                    25px;
+            }
+
+            .start-text {
+
+                font-size:
+                    14px;
+
+                margin-bottom:
+                    20px;
+            }
+
+            .date-input {
+
+                padding:
+                    13px 9px;
+
+                font-size:
+                    13px;
+            }
+
+            .start-button {
+
+                padding:
+                    13px;
+
+                font-size:
+                    14px;
+            }
+
+            .letter {
+
+                width:
+                    96vw;
+
+                max-width:
+                    96vw;
+
+                padding:
+                    20px 13px 18px;
+
+                border-radius:
+                    13px;
+            }
+
+            .letter-header {
+
+                font-size:
+                    21px;
+
+                margin-bottom:
+                    18px;
+            }
+
+            .letter-line {
+
+                font-size:
+                    14px;
+
+                line-height:
+                    1.48;
+
+                margin-bottom:
+                    14px;
+            }
+
+            .envelope-wrapper {
+
+                width:
+                    94vw;
+
+                height:
+                    220px;
+
+                min-height:
+                    200px;
+            }
+
+            .wax-seal {
+
+                width:
+                    44px;
+
+                height:
+                    44px;
+
+                font-size:
+                    20px;
+            }
+
+            .click-hint {
+
+                bottom:
+                    -43px;
+
+                font-size:
+                    12px;
+            }
+
+            .photo-frame {
+
+                padding:
+                    5px;
             }
 
             .final-message {
 
-                font-size: 18px;
+                font-size:
+                    14px;
+            }
 
-                line-height: 1.4;
+            .sound-button {
+
+                width:
+                    38px;
+
+                height:
+                    38px;
+
+                font-size:
+                    16px;
+
+                top:
+                    8px;
+
+                right:
+                    8px;
             }
         }
 
@@ -2425,6 +3850,301 @@
 
 
 <body>
+
+
+    <!-- =====================================================
+         БІОМЕТРИЧНИЙ СКАНЕР
+    ====================================================== -->
+
+    <div
+        class="biometric-screen"
+        id="biometricScreen"
+    >
+
+        <div class="biometric-corners"></div>
+
+        <div class="biometric-container">
+
+            <div class="biometric-system">
+                SYSTEM://BIOMETRIC_AUTH
+            </div>
+
+            <div class="biometric-title">
+                БІОМЕТРИЧНА ІДЕНТИФІКАЦІЯ
+            </div>
+
+            <div class="biometric-subtitle">
+                Для продовження необхідно підтвердити особу
+            </div>
+
+
+            <div class="fingerprint-area">
+
+                <div
+                    class="fingerprint-scanner"
+                    id="fingerprintScanner"
+                    aria-label="Затисніть для сканування"
+                >
+
+                    <div class="fingerprint-glow"></div>
+
+                    <div class="scan-line"></div>
+
+                    <svg
+                        viewBox="0 0 300 300"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+
+                        <!-- Базовий відбиток -->
+
+                        <g class="fingerprint-base">
+
+                            <path d="
+                                M150 35
+                                C92 35 55 82 55 142
+                                C55 204 92 254 150 265
+                                C208 254 245 204 245 142
+                                C245 82 208 35 150 35
+                            "/>
+
+                            <path d="
+                                M150 50
+                                C105 50 75 87 75 140
+                                C75 192 105 230 150 247
+                                C195 230 225 192 225 140
+                                C225 87 195 50 150 50
+                            "/>
+
+                            <path d="
+                                M150 66
+                                C117 66 94 94 94 138
+                                C94 180 117 211 150 229
+                                C183 211 206 180 206 138
+                                C206 94 183 66 150 66
+                            "/>
+
+                            <path d="
+                                M150 82
+                                C128 82 111 103 111 136
+                                C111 168 128 192 150 210
+                                C172 192 189 168 189 136
+                                C189 103 172 82 150 82
+                            "/>
+
+                            <path d="
+                                M150 99
+                                C137 99 126 113 126 135
+                                C126 157 137 176 150 191
+                                C163 176 174 157 174 135
+                                C174 113 163 99 150 99
+                            "/>
+
+                            <path d="
+                                M150 117
+                                C143 117 137 125 137 137
+                                C137 149 143 160 150 169
+                                C157 160 163 149 163 137
+                                C163 125 157 117 150 117
+                            "/>
+
+                            <path d="
+                                M150 132
+                                C146 132 143 136 143 141
+                                C143 147 146 152 150 156
+                                C154 152 157 147 157 141
+                                C157 136 154 132 150 132
+                            "/>
+
+                            <path d="
+                                M150 35
+                                C130 42 111 55 97 73
+                            "/>
+
+                            <path d="
+                                M150 35
+                                C170 42 189 55 203 73
+                            "/>
+
+                            <path d="
+                                M55 142
+                                C72 134 87 132 101 135
+                            "/>
+
+                            <path d="
+                                M245 142
+                                C228 134 213 132 199 135
+                            "/>
+
+                            <path d="
+                                M65 185
+                                C84 181 99 185 111 196
+                            "/>
+
+                            <path d="
+                                M235 185
+                                C216 181 201 185 189 196
+                            "/>
+
+                            <path d="
+                                M87 224
+                                C104 221 119 226 130 238
+                            "/>
+
+                            <path d="
+                                M213 224
+                                C196 221 181 226 170 238
+                            "/>
+
+                        </g>
+
+
+                        <!-- Відбиток, який заповнюється кольором -->
+
+                        <g
+                            class="fingerprint-progress"
+                            id="fingerprintProgress"
+                        >
+
+                            <path d="
+                                M150 35
+                                C92 35 55 82 55 142
+                                C55 204 92 254 150 265
+                                C208 254 245 204 245 142
+                                C245 82 208 35 150 35
+                            "/>
+
+                            <path d="
+                                M150 50
+                                C105 50 75 87 75 140
+                                C75 192 105 230 150 247
+                                C195 230 225 192 225 140
+                                C225 87 195 50 150 50
+                            "/>
+
+                            <path d="
+                                M150 66
+                                C117 66 94 94 94 138
+                                C94 180 117 211 150 229
+                                C183 211 206 180 206 138
+                                C206 94 183 66 150 66
+                            "/>
+
+                            <path d="
+                                M150 82
+                                C128 82 111 103 111 136
+                                C111 168 128 192 150 210
+                                C172 192 189 168 189 136
+                                C189 103 172 82 150 82
+                            "/>
+
+                            <path d="
+                                M150 99
+                                C137 99 126 113 126 135
+                                C126 157 137 176 150 191
+                                C163 176 174 157 174 135
+                                C174 113 163 99 150 99
+                            "/>
+
+                            <path d="
+                                M150 117
+                                C143 117 137 125 137 137
+                                C137 149 143 160 150 169
+                                C157 160 163 149 163 137
+                                C163 125 157 117 150 117
+                            "/>
+
+                            <path d="
+                                M150 132
+                                C146 132 143 136 143 141
+                                C143 147 146 152 150 156
+                                C154 152 157 147 157 141
+                                C157 136 154 132 150 132
+                            "/>
+
+                            <path d="
+                                M150 35
+                                C130 42 111 55 97 73
+                            "/>
+
+                            <path d="
+                                M150 35
+                                C170 42 189 55 203 73
+                            "/>
+
+                            <path d="
+                                M55 142
+                                C72 134 87 132 101 135
+                            "/>
+
+                            <path d="
+                                M245 142
+                                C228 134 213 132 199 135
+                            "/>
+
+                            <path d="
+                                M65 185
+                                C84 181 99 185 111 196
+                            "/>
+
+                            <path d="
+                                M235 185
+                                C216 181 201 185 189 196
+                            "/>
+
+                            <path d="
+                                M87 224
+                                C104 221 119 226 130 238
+                            "/>
+
+                            <path d="
+                                M213 224
+                                C196 221 181 226 170 238
+                            "/>
+
+                        </g>
+
+                    </svg>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="biometric-percent"
+                id="biometricPercent"
+            >
+                0%
+            </div>
+
+            <div
+                class="biometric-status"
+                id="biometricStatus"
+            >
+                Очікування біометричного підтвердження...
+            </div>
+
+
+            <div class="biometric-progress">
+
+                <div
+                    class="biometric-progress-bar"
+                    id="biometricProgressBar"
+                ></div>
+
+            </div>
+
+
+            <div
+                class="biometric-hint"
+                id="biometricHint"
+            >
+                Затисніть відбиток і тримайте до 100%
+            </div>
+
+        </div>
+
+    </div>
 
 
     <div id="particles"></div>
@@ -2472,18 +4192,11 @@
             </div>
 
 
-            <!--
-                Термінал тепер має власну прокрутку.
-                Останній рядок завжди буде видно.
-            -->
-
             <div
                 class="boot-terminal"
                 id="bootTerminal"
             ></div>
 
-
-            <!-- ФІКСОВАНА ПЛАШКА ПРОГРЕСУ -->
 
             <div class="boot-progress-area">
 
@@ -2736,78 +4449,483 @@
 
 
         /* =====================================================
+           БІОМЕТРИЧНИЙ СКАНЕР
+        ===================================================== */
+
+        const biometricScreen =
+            document.getElementById(
+                "biometricScreen"
+            );
+
+        const fingerprintScanner =
+            document.getElementById(
+                "fingerprintScanner"
+            );
+
+        const biometricPercent =
+            document.getElementById(
+                "biometricPercent"
+            );
+
+        const biometricStatus =
+            document.getElementById(
+                "biometricStatus"
+            );
+
+        const biometricProgressBar =
+            document.getElementById(
+                "biometricProgressBar"
+            );
+
+        const biometricHint =
+            document.getElementById(
+                "biometricHint"
+            );
+
+
+        let biometricHolding = false;
+
+        let biometricCompleted = false;
+
+        let biometricTimers = [];
+
+        let biometricPointerId = null;
+
+
+        function clearBiometricTimers() {
+
+            biometricTimers.forEach(
+                timer => clearTimeout(timer)
+            );
+
+            biometricTimers = [];
+
+        }
+
+
+        function setBiometricProgress(
+            progress
+        ) {
+
+            progress =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        progress
+                    )
+                );
+
+            biometricPercent.textContent =
+                progress + "%";
+
+            biometricProgressBar.style.width =
+                progress + "%";
+
+            /*
+             * Чим більший progress,
+             * тим більша частина відбитка
+             * заповнюється кольором.
+             */
+
+            fingerprintScanner.style.setProperty(
+                "--scan-reveal",
+                (100 - progress) + "%"
+            );
+
+        }
+
+
+        function startBiometricScan(event) {
+
+            if (
+                biometricCompleted ||
+                biometricHolding
+            ) {
+                return;
+            }
+
+
+            event.preventDefault();
+
+
+            biometricHolding = true;
+
+            biometricPointerId =
+                event.pointerId;
+
+
+            clearBiometricTimers();
+
+
+            try {
+
+                fingerprintScanner.setPointerCapture(
+                    event.pointerId
+                );
+
+            } catch (error) {}
+
+
+
+            fingerprintScanner.classList.add(
+                "scanning"
+            );
+
+
+            biometricStatus.textContent =
+                "Сканування біометричного підпису...";
+
+            biometricHint.textContent =
+                "Не відпускайте палець...";
+
+
+            /*
+             * Початкове сканування.
+             */
+
+            setBiometricProgress(
+                15
+            );
+
+
+            biometricTimers.push(
+
+                setTimeout(
+                    () => {
+
+                        if (
+                            !biometricHolding
+                        ) {
+                            return;
+                        }
+
+                        setBiometricProgress(
+                            45
+                        );
+
+                        biometricStatus.textContent =
+                            "Аналіз відбитка...";
+
+                    },
+                    450
+                )
+
+            );
+
+
+            biometricTimers.push(
+
+                setTimeout(
+                    () => {
+
+                        if (
+                            !biometricHolding
+                        ) {
+                            return;
+                        }
+
+                        setBiometricProgress(
+                            80
+                        );
+
+                        biometricStatus.textContent =
+                            "Підтвердження особи...";
+
+                    },
+                    900
+                )
+
+            );
+
+
+            biometricTimers.push(
+
+                setTimeout(
+                    () => {
+
+                        if (
+                            !biometricHolding
+                        ) {
+                            return;
+                        }
+
+                        setBiometricProgress(
+                            100
+                        );
+
+                        biometricCompleted =
+                            true;
+
+                        biometricHolding =
+                            false;
+
+                        fingerprintScanner.classList.remove(
+                            "scanning"
+                        );
+
+                        fingerprintScanner.classList.add(
+                            "success"
+                        );
+
+                        biometricPercent.style.color =
+                            "#6ee7a8";
+
+                        biometricStatus.textContent =
+                            "БІОМЕТРІЮ ПІДТВЕРДЖЕНО";
+
+                        biometricHint.textContent =
+                            "ACCESS GRANTED";
+
+                        biometricHint.style.color =
+                            "#6ee7a8";
+
+
+                        setTimeout(
+                            () => {
+
+                                finishBiometric();
+
+                            },
+                            900
+                        );
+
+                    },
+                    1800
+                )
+
+            );
+
+        }
+
+
+        function stopBiometricScan(event) {
+
+            if (
+                biometricCompleted ||
+                !biometricHolding
+            ) {
+                return;
+            }
+
+
+            if (
+                event &&
+                biometricPointerId !== null &&
+                event.pointerId !== biometricPointerId
+            ) {
+                return;
+            }
+
+
+            biometricHolding =
+                false;
+
+            biometricPointerId =
+                null;
+
+
+            clearBiometricTimers();
+
+
+            try {
+
+                if (
+                    fingerprintScanner.hasPointerCapture(
+                        event.pointerId
+                    )
+                ) {
+
+                    fingerprintScanner.releasePointerCapture(
+                        event.pointerId
+                    );
+
+                }
+
+            } catch (error) {}
+
+
+            fingerprintScanner.classList.remove(
+                "scanning"
+            );
+
+
+            biometricStatus.textContent =
+                "Сканування перервано.";
+
+            biometricHint.textContent =
+                "Затисніть відбиток і тримайте до 100%";
+
+
+            setBiometricProgress(
+                0
+            );
+
+
+            setTimeout(
+                () => {
+
+                    if (
+                        !biometricCompleted &&
+                        !biometricHolding
+                    ) {
+
+                        biometricStatus.textContent =
+                            "Очікування біометричного підтвердження...";
+
+                    }
+
+                },
+                700
+            );
+
+        }
+
+
+        function finishBiometric() {
+
+            clearBiometricTimers();
+
+
+            biometricScreen.classList.add(
+                "fade-out"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    biometricScreen.classList.add(
+                        "hidden"
+                    );
+
+
+                    /*
+                     * Тільки після завершення
+                     * біометрії запускається BOOT.
+                     */
+
+                    runBootSequence();
+
+                },
+                900
+            );
+
+        }
+
+
+        /*
+         * Pointer Events працюють і для:
+         *
+         * - телефону;
+         * - планшета;
+         * - миші;
+         * - тачпада.
+         */
+
+        fingerprintScanner.addEventListener(
+            "pointerdown",
+            startBiometricScan
+        );
+
+
+        fingerprintScanner.addEventListener(
+            "pointerup",
+            stopBiometricScan
+        );
+
+
+        fingerprintScanner.addEventListener(
+            "pointercancel",
+            stopBiometricScan
+        );
+
+
+        fingerprintScanner.addEventListener(
+            "lostpointercapture",
+            () => {
+
+                if (
+                    biometricHolding &&
+                    !biometricCompleted
+                ) {
+
+                    stopBiometricScan();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
            BOOT SEQUENCE
         ===================================================== */
 
         const bootLines = [
 
             {
-                text: "[BOOT] Initializing private access protocol...",
+                text: "[BOOT] Встановлення протоколу Pelmeshka 2.0...",
                 type: "command"
             },
 
             {
-                text: "[OK] Secure environment loaded.",
+                text: "[OK] Завантаження ресурсів...",
                 type: "success"
             },
 
             {
-                text: "[NET] Connecting to secure server...",
+                text: "[NET] Підключення до серверу...",
                 type: "command"
             },
 
             {
-                text: "[NET] Establishing encrypted connection...",
+                text: "[NET] Запуск сканування...",
                 type: "command"
             },
 
             {
-                text: "[OK] Secure connection established.",
+                text: "[BIO] Сканування біометричного підпису...",
+                type: "command"
+            },
+
+            {
+                text: "[BIO] Виявлено малюнок райдужки ока.",
                 type: "success"
             },
 
             {
-                text: "[BIO] Scanning biometric signature...",
+                text: "[SYS] Аналіз людини...",
                 type: "command"
             },
 
             {
-                text: "[BIO] Eye pattern detected.",
-                type: "success"
-            },
-
-            {
-                text: "[SYS] Analyzing user profile...",
+                text: "[SYS] Перевірка думок в підсвідомості...",
                 type: "command"
             },
 
             {
-                text: "[SYS] Cross-checking access permissions...",
-                type: "command"
-            },
-
-            {
-                text: "[WARN] Emotional vulnerability detected.",
-                type: "warning"
-            },
-
-            {
-                text: "[AI] Searching for positive memories...",
+                text: "[AI] Пошук даних...",
                 type: "pink"
             },
 
             {
-                text: "[AI] Access granted.",
-                type: "success"
-            },
-
-            {
-                text: "[SYSTEM] Preparing something special...",
+                text: "[AI] Підготовка...",
                 type: "pink"
             },
 
             {
-                text: "[SYSTEM] Welcome, authorized user.",
+                text: "[SYSTEM] Людину виявлено.",
+                type: "success"
+            },
+
+            {
+                text: "[SYSTEM] Дані вираховано.",
+                type: "success"
+            },
+
+            {
+                text: "[SYSTEM] Welcome, Мартинюк Юліє Володимирівно.",
                 type: "success"
             }
 
@@ -2853,34 +4971,11 @@
         let soundsEnabled = true;
 
 
-        /*
-         * Швидкість друку одного символу.
-         */
-
-        const bootTypingSpeed = 24;
+        const bootTypingSpeed = 30;
 
 
-        /*
-         * Пауза між рядками.
-         */
+        const bootLinePause = 450;
 
-        const bootLinePause = 260;
-
-
-        /*
-         * =====================================================
-         * СТЕЖЕННЯ ЗА ТЕКСТОМ
-         *
-         * Ця функція прокручує ТІЛЬКИ bootTerminal.
-         *
-         * Тому:
-         *
-         * - старі рядки йдуть вгору;
-         * - новий рядок завжди залишається видимим;
-         * - прогрес унизу не рухається;
-         * - вся сторінка не скаче.
-         * =====================================================
-         */
 
         function followBootText() {
 
@@ -2895,12 +4990,6 @@
 
         }
 
-
-        /*
-         * =====================================================
-         * ДРУК ОДНОГО РЯДКА
-         * =====================================================
-         */
 
         async function typeBootLine(line) {
 
@@ -2949,16 +5038,8 @@
             );
 
 
-            /*
-             * Одразу показуємо новий рядок.
-             */
-
             followBootText();
 
-
-            /*
-             * Друкуємо символ за символом.
-             */
 
             for (
                 let i = 0;
@@ -2969,11 +5050,6 @@
                 textSpan.textContent +=
                     line.text[i];
 
-
-                /*
-                 * Після кожного символу
-                 * термінал стежить за останнім рядком.
-                 */
 
                 followBootText();
 
@@ -2989,18 +5065,8 @@
             }
 
 
-            /*
-             * Видаляємо курсор після
-             * завершення друку.
-             */
-
             cursor.remove();
 
-
-            /*
-             * Ще раз прокручуємо вниз,
-             * щоб останній рядок точно залишився видимим.
-             */
 
             followBootText();
 
@@ -3016,17 +5082,7 @@
         }
 
 
-        /*
-         * =====================================================
-         * BOOT SEQUENCE
-         * =====================================================
-         */
-
         async function runBootSequence() {
-
-            /*
-             * Запускаємо звук набору.
-             */
 
             playSound(
                 "bootTypingSound"
@@ -3044,11 +5100,6 @@
                 );
 
 
-                /*
-                 * Прогрес рахується
-                 * по завершених рядках.
-                 */
-
                 const progress =
                     Math.round(
                         (
@@ -3065,10 +5116,6 @@
             }
 
 
-            /*
-             * Кінець boot-процесу.
-             */
-
             stopSound(
                 "bootTypingSound"
             );
@@ -3082,22 +5129,14 @@
                 "#6ee7a8";
 
 
-            /*
-             * Маленька пауза після 100%.
-             */
-
             await new Promise(
                 resolve =>
                     setTimeout(
                         resolve,
-                        800
+                        1200
                     )
             );
 
-
-            /*
-             * Плавне зникнення.
-             */
 
             bootScreen.style.transition =
                 "opacity 0.8s ease, transform 0.8s ease";
@@ -3132,25 +5171,9 @@
         }
 
 
-        /*
-         * =====================================================
-         * ПРОГРЕС
-         * =====================================================
-         */
-
         function updateBootProgress(
             progress
         ) {
-
-            /*
-             * Ширина процентів ФІКСОВАНА.
-             *
-             * 1%
-             * 10%
-             * 100%
-             *
-             * нічого не рухають.
-             */
 
             bootPercent.textContent =
                 progress + "%";
@@ -3275,12 +5298,6 @@
                 soundButton.textContent =
                     "🔊";
 
-
-                /*
-                 * Якщо boot ще триває,
-                 * при повторному увімкненні
-                 * повертаємо звук набору.
-                 */
 
                 if (
                     !bootScreen.classList.contains(
@@ -3440,20 +5457,31 @@
 
 
         /* =====================================================
-           BOOT ЗАПУСКАЄТЬСЯ ПЕРШИМ
+           ЗАПУСК
+
+           BOOT БІЛЬШЕ НЕ ЗАПУСКАЄТЬСЯ
+           ПРИ ЗАВАНТАЖЕННІ СТОРІНКИ.
+
+           Спочатку:
+           БІОМЕТРІЯ.
+
+           Після 100%:
+           BOOT.
         ===================================================== */
 
         window.addEventListener(
             "load",
             () => {
 
-                setTimeout(
-                    () => {
+                /*
+                 * На момент завантаження
+                 * біометричний екран уже видно.
+                 *
+                 * BOOT тут НЕ запускаємо.
+                 */
 
-                        runBootSequence();
-
-                    },
-                    500
+                setBiometricProgress(
+                    0
                 );
 
             }
