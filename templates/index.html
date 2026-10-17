@@ -7161,6 +7161,18 @@
             animation: wineProgressShimmer 3.8s ease-in-out infinite !important;
         }
 
+    
+
+        /* МОБІЛЬНИЙ LOADING: троянда більша й помітніша, інші екрани без змін. */
+        @media (max-width: 600px) {
+            .crt-shutdown.loading .rose-loader {
+                width: min(78vw, 350px) !important;
+                height: min(84dvh, 640px) !important;
+                top: 46% !important;
+                transform: translate(-50%, -50%) scale(1) !important;
+            }
+        }
+
     </style>
 
 </head>
