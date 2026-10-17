@@ -7317,7 +7317,175 @@
             }
         }
 
-</style>
+
+
+        /* =====================================================
+           VERIFIED DEVICE FIT + BEIGE ACCESS BUTTON
+           These rules intentionally come last so earlier theme patches
+           cannot override the final mobile sizing and button color.
+           ===================================================== */
+
+        .start-button,
+        .start-button:visited,
+        .start-button:focus-visible {
+            color: #4a2020 !important;
+            background: linear-gradient(135deg, #fff8e9 0%, #f2e2c8 52%, #ddc29a 100%) !important;
+            -webkit-text-fill-color: #4a2020 !important;
+            border: 1px solid rgba(255, 244, 222, .94) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.88),
+                0 9px 24px rgba(0,0,0,.25),
+                0 0 0 1px rgba(205,174,130,.20) !important;
+        }
+
+        .start-button:hover {
+            color: #40171c !important;
+            background: linear-gradient(135deg, #fffaf0 0%, #f5e7d1 58%, #e7d0ad 100%) !important;
+            -webkit-text-fill-color: #40171c !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.92),
+                0 12px 28px rgba(0,0,0,.29) !important;
+            transform: translateY(-2px);
+        }
+
+        .start-button:active {
+            background: linear-gradient(135deg, #f1dfc0 0%, #e1c59c 100%) !important;
+            transform: scale(.98);
+        }
+
+        /* Keep the envelope proportional on every aspect ratio, not just width. */
+        .envelope-wrapper {
+            box-sizing: border-box !important;
+            width: min(470px, 86vw, 62dvh) !important;
+            height: auto !important;
+            aspect-ratio: 1.68 / 1 !important;
+            min-height: 0 !important;
+            max-width: calc(100vw - 24px) !important;
+            margin-inline: auto !important;
+            overflow: visible !important;
+            flex: 0 1 auto !important;
+        }
+
+        .envelope {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Keep the daisy clear of the flap: it sits on top of the envelope,
+           with its bloom positioned above the upper-right edge. */
+        .envelope-rose.envelope-daisy {
+            width: clamp(112px, 29vw, 150px) !important;
+            height: auto !important;
+            right: 8px !important;
+            top: -86px !important;
+            z-index: 0 !important;
+            pointer-events: none !important;
+        }
+
+        .click-hint {
+            max-width: calc(100vw - 32px) !important;
+            text-align: center !important;
+            white-space: normal !important;
+        }
+
+        /* Stop mobile scrolling from resizing/repositioning the flower frame.
+           The sticky SVG stays still; only the letter text scrolls underneath. */
+        .letter .gypsophila-frame {
+            transform: none !important;
+            will-change: auto !important;
+            backface-visibility: hidden !important;
+            -webkit-backface-visibility: hidden !important;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 100% !important;
+                min-height: min(100dvh, 600px) !important;
+            }
+
+            .envelope-wrapper {
+                width: min(78vw, 360px, 60dvh) !important;
+                max-width: calc(100vw - 28px) !important;
+                aspect-ratio: 1.68 / 1 !important;
+            }
+
+            .envelope-rose.envelope-daisy {
+                width: clamp(98px, 36%, 128px) !important;
+                height: auto !important;
+                right: 4px !important;
+                top: -79px !important;
+                z-index: 0 !important;
+            }
+
+            .wax-seal {
+                width: clamp(42px, 13vw, 50px) !important;
+                height: clamp(42px, 13vw, 50px) !important;
+                font-size: clamp(18px, 5.2vw, 22px) !important;
+            }
+
+            .click-hint {
+                bottom: -42px !important;
+                font-size: clamp(12px, 3.6vw, 14px) !important;
+            }
+
+            .letter {
+                scroll-behavior: auto !important;
+            }
+
+            .letter .gypsophila-frame {
+                margin-bottom: -122vw !important;
+                transition: none !important;
+            }
+        }
+
+        /* Landscape phones and short browser windows: scale by height as well. */
+        @media (max-height: 600px) {
+            .container {
+                min-height: 100dvh !important;
+                height: 100dvh !important;
+            }
+
+            .envelope-wrapper {
+                width: min(72vw, 380px, 82dvh) !important;
+                max-width: calc(100vw - 24px) !important;
+                aspect-ratio: 1.68 / 1 !important;
+            }
+
+            .envelope-rose.envelope-daisy {
+                width: clamp(82px, 31%, 116px) !important;
+                height: auto !important;
+                right: 4px !important;
+                top: -68px !important;
+                z-index: 0 !important;
+            }
+
+            .click-hint {
+                bottom: -34px !important;
+                font-size: 12px !important;
+            }
+
+            .letter .gypsophila-frame {
+                margin-bottom: -122vw !important;
+            }
+        }
+
+        @media (max-width: 360px) and (min-height: 601px) {
+            .envelope-wrapper {
+                width: min(76vw, 300px, 56dvh) !important;
+            }
+
+            .envelope-rose.envelope-daisy {
+                width: 98px !important;
+                right: 3px !important;
+                top: -70px !important;
+            }
+
+            .click-hint {
+                bottom: -39px !important;
+            }
+        }
+
+    </style>
 
 </head>
 
@@ -11356,44 +11524,6 @@
 
     </script>
 
-
-    <script>
-        // Keep the gypsophila frame stable while the letter text scrolls.
-        // A sticky SVG avoids translating the flowers on every scroll frame (the old
-        // transform/scrollTop approach caused visible jitter on touch screens).
-        (() => {
-            const panel = document.getElementById("letter");
-            const frame = panel && panel.querySelector(".gypsophila-frame");
-            if (!panel || !frame) return;
-
-            let scheduled = false;
-            const syncFrameLayout = () => {
-                if (scheduled) return;
-                scheduled = true;
-                requestAnimationFrame(() => {
-                    scheduled = false;
-                    const height = frame.offsetHeight;
-                    if (!height) return; // The letter starts hidden; ResizeObserver retries on reveal.
-                    const nextMargin = `${-height}px`;
-                    if (frame.style.marginBottom !== nextMargin) {
-                        frame.style.marginBottom = nextMargin;
-                    }
-                    frame.style.transform = "none";
-                });
-            };
-
-            if ("ResizeObserver" in window) {
-                const resizeObserver = new ResizeObserver(syncFrameLayout);
-                resizeObserver.observe(frame);
-                resizeObserver.observe(panel);
-            }
-
-            const classObserver = new MutationObserver(syncFrameLayout);
-            classObserver.observe(panel, { attributes: true, attributeFilter: ["class"] });
-            window.addEventListener("resize", syncFrameLayout, { passive: true });
-            syncFrameLayout();
-        })();
-    </script>
 
 </body>
 
