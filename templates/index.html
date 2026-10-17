@@ -7173,7 +7173,151 @@
             }
         }
 
-    </style>
+    
+
+        /* =====================================================
+           RESPONSIVE FINISH: envelope + flower frame on touch devices
+           ===================================================== */
+        .envelope-wrapper {
+            width: min(470px, 88vw, 78dvh) !important;
+            height: auto !important;
+            aspect-ratio: 1.68 / 1 !important;
+            min-height: 0 !important;
+            max-width: calc(100vw - 28px) !important;
+            overflow: visible !important;
+            flex: 0 1 auto !important;
+        }
+
+        .envelope {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .envelope-rose.envelope-daisy {
+            width: clamp(112px, 38%, 178px) !important;
+            height: auto !important;
+            right: 25px !important;
+            top: -114px !important;
+            z-index: 0 !important;
+            transform-origin: 50% 88%;
+        }
+
+        .letter {
+            --letter-pad-x: 38px;
+            --letter-pad-y: 34px;
+            padding-top: 0 !important;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+            scroll-padding-block: 12px;
+        }
+
+        /* Sticky flower frame: no JS transforms while scrolling, so the branches
+           stay still instead of bouncing against the moving text. */
+        .letter .gypsophila-frame {
+            position: sticky !important;
+            inset: auto !important;
+            top: 0 !important;
+            left: auto !important;
+            right: auto !important;
+            bottom: auto !important;
+            display: block !important;
+            width: calc(100% + var(--letter-pad-x) + var(--letter-pad-x) - 14px) !important;
+            height: auto !important;
+            aspect-ratio: 680 / 900;
+            margin-top: 0 !important;
+            margin-left: calc(7px - var(--letter-pad-x)) !important;
+            margin-right: auto !important;
+            margin-bottom: -988px;
+            transform: none !important;
+            transition: opacity .45s ease !important;
+            will-change: auto !important;
+            pointer-events: none !important;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .letter > .letter-header {
+            margin-top: calc(var(--letter-pad-y) + 26px) !important;
+        }
+
+        @media (max-width: 760px) {
+            .letter .gypsophila-frame {
+                margin-bottom: -122vw;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .envelope-wrapper {
+                width: min(470px, 86vw, 76dvh) !important;
+                aspect-ratio: 1.68 / 1 !important;
+                margin-inline: auto !important;
+            }
+
+            .envelope-rose.envelope-daisy {
+                width: clamp(112px, 38%, 136px) !important;
+                height: auto !important;
+                right: 20px !important;
+                top: -91px !important;
+            }
+
+            .letter {
+                --letter-pad-x: 16px;
+                --letter-pad-y: 26px;
+                scroll-behavior: smooth;
+            }
+
+            .letter > .letter-header {
+                margin-top: calc(var(--letter-pad-y) + 22px) !important;
+            }
+
+            .letter .gypsophila-frame {
+                margin-bottom: -122vw;
+            }
+        }
+
+        /* Compact landscape phones: keep the envelope, daisy and hint inside view. */
+        @media (max-height: 600px) {
+            body {
+                padding: 0 !important;
+                min-height: 100dvh !important;
+            }
+
+            .container {
+                min-height: 100dvh !important;
+                height: 100dvh !important;
+            }
+
+            .envelope-wrapper {
+                width: min(470px, 78vw, 55dvh) !important;
+                aspect-ratio: 1.68 / 1 !important;
+            }
+
+            .envelope-rose.envelope-daisy {
+                width: clamp(82px, 38%, 112px) !important;
+                right: 16px !important;
+                top: -61px !important;
+            }
+
+            .click-hint {
+                bottom: -34px !important;
+                font-size: 12px !important;
+            }
+
+            .letter {
+                --letter-pad-x: 16px;
+                --letter-pad-y: 18px;
+                max-height: 84dvh !important;
+                padding: 18px 16px !important;
+            }
+
+            .letter .gypsophila-frame {
+                top: 0 !important;
+                margin-top: 0 !important;
+                margin-bottom: -122vw;
+            }
+        }
+
+</style>
 
 </head>
 
@@ -11214,24 +11358,40 @@
 
 
     <script>
-        // Keep the floral border fixed to the visible paper while its text scrolls.
+        // Keep the gypsophila frame stable while the letter text scrolls.
+        // A sticky SVG avoids translating the flowers on every scroll frame (the old
+        // transform/scrollTop approach caused visible jitter on touch screens).
         (() => {
-            const letterPanel = document.getElementById("letter");
-            const flowerFrame = letterPanel && letterPanel.querySelector(".gypsophila-frame");
-            if (!letterPanel || !flowerFrame) return;
+            const panel = document.getElementById("letter");
+            const frame = panel && panel.querySelector(".gypsophila-frame");
+            if (!panel || !frame) return;
 
-            let frameSyncQueued = false;
-            const syncFlowerFrame = () => {
-                if (frameSyncQueued) return;
-                frameSyncQueued = true;
+            let scheduled = false;
+            const syncFrameLayout = () => {
+                if (scheduled) return;
+                scheduled = true;
                 requestAnimationFrame(() => {
-                    flowerFrame.style.transform = `translate3d(0, ${letterPanel.scrollTop}px, 0)`;
-                    frameSyncQueued = false;
+                    scheduled = false;
+                    const height = frame.offsetHeight;
+                    if (!height) return; // The letter starts hidden; ResizeObserver retries on reveal.
+                    const nextMargin = `${-height}px`;
+                    if (frame.style.marginBottom !== nextMargin) {
+                        frame.style.marginBottom = nextMargin;
+                    }
+                    frame.style.transform = "none";
                 });
             };
 
-            letterPanel.addEventListener("scroll", syncFlowerFrame, { passive: true });
-            syncFlowerFrame();
+            if ("ResizeObserver" in window) {
+                const resizeObserver = new ResizeObserver(syncFrameLayout);
+                resizeObserver.observe(frame);
+                resizeObserver.observe(panel);
+            }
+
+            const classObserver = new MutationObserver(syncFrameLayout);
+            classObserver.observe(panel, { attributes: true, attributeFilter: ["class"] });
+            window.addEventListener("resize", syncFrameLayout, { passive: true });
+            syncFrameLayout();
         })();
     </script>
 
